@@ -1,0 +1,99 @@
+.page { padding: 60px 0 100px; }
+.intro { max-width: 800px; margin-bottom: 48px; }
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+.title {
+  font-family: var(--serif);
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.imgWrap {
+  position: relative;
+  margin-bottom: 48px;
+}
+.img {
+  width: 100%;
+  aspect-ratio: 16/7;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #1a0d05 0%, #2d1509 40%, #4a2210 70%, #6b3518 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.imgOverlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+.imgMark {
+  width: 72px;
+  height: 72px;
+  border: 1.5px solid rgba(255,255,255,.25);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: 36px;
+  font-style: italic;
+  color: rgba(255,255,255,.8);
+}
+.imgQuote {
+  font-family: var(--serif);
+  font-size: clamp(18px, 2.5vw, 28px);
+  color: rgba(255,255,255,.7);
+  font-style: italic;
+  max-width: 480px;
+  line-height: 1.4;
+}
+.imgCaption {
+  position: absolute;
+  bottom: 16px;
+  left: 20px;
+  font-size: 10px;
+  letter-spacing: .18em;
+  font-weight: 600;
+  color: rgba(255,255,255,.45);
+}
+
+.body {
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-bottom: 60px;
+}
+.body p {
+  font-size: 17px;
+  color: var(--ink-2);
+  line-height: 1.75;
+}
+
+.statsBox {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  background: var(--bg-2);
+  border-radius: 20px;
+  padding: 40px 48px;
+  max-width: 760px;
+}
+.stat { display: flex; flex-direction: column; gap: 6px; }
+.statNum { font-family: var(--serif); font-size: 40px; color: var(--ink); }
+.statLabel {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  color: var(--ink-3);
+}
+.statDiv { width: 1px; height: 48px; background: var(--line); }

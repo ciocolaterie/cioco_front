@@ -1,0 +1,13 @@
+.badge {
+  display: inline-flex; align-items: center; padding: 4px 10px;
+  font-size: 11px; font-weight: 600; border-radius: 999px;
+  letter-spacing: .02em;
+}
+.default { background: var(--bg-2); color: var(--ink-2); }
+.noua { background: #FFE5D6; color: #A0451B; }
+.in_pregatire { background: #FEF3C7; color: #92400E; }
+.gata { background: #D1FAE5; color: #065F46; }
+.livrata { background: #E5E7EB; color: #374151; }
+.anulata { background: #FEE2E2; color: #991B1B; }
+.success { background: #D1FAE5; color: #065F46; }
+.warn { background: #FEF3C7; color: #92400E; }

@@ -1,0 +1,134 @@
+.head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+.head h1 { font-family: var(--serif); font-size: 32px; margin-bottom: 4px; }
+.head p { font-size: 13px; color: var(--ink-3); }
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0;
+}
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-2);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color .15s;
+}
+.tab:hover { color: var(--ink); }
+.tabActive { color: var(--ink); border-bottom-color: var(--ink); }
+.tabBadge {
+  background: var(--bg-3);
+  color: var(--ink-2);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 999px;
+}
+.tabBadgePending {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.empty {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--ink-3);
+  font-size: 14px;
+}
+
+.list { display: flex; flex-direction: column; gap: 12px; }
+
+.card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+}
+.cardPending {
+  border-left: 3px solid #F59E0B;
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.cardLeft { display: flex; flex-direction: column; gap: 6px; }
+.cardRight { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+.stars { color: #C9821A; font-size: 16px; letter-spacing: 1px; }
+.starsEmpty { color: var(--line); }
+
+.meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 13px; }
+.author { font-weight: 600; color: var(--ink); }
+.dot { color: var(--ink-3); }
+.product { color: var(--accent); }
+.product:hover { text-decoration: underline; }
+.date { color: var(--ink-3); }
+
+.text {
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.6;
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.actions { display: flex; align-items: center; gap: 6px; }
+
+.btnApprove, .btnReject, .btnDelete {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .12s, color .12s;
+}
+.btnApprove { background: #d1fae5; color: #065f46; }
+.btnApprove:hover:not(:disabled) { background: #059669; color: #fff; }
+.btnReject { background: #FEF3C7; color: #92400E; }
+.btnReject:hover:not(:disabled) { background: #D97706; color: #fff; }
+.btnDelete {
+  padding: 6px 10px;
+  background: var(--bg-2);
+  color: var(--ink-3);
+}
+.btnDelete:hover:not(:disabled) { background: #fee2e2; color: #DC2626; }
+.btnApprove:disabled, .btnReject:disabled, .btnDelete:disabled { opacity: .5; cursor: not-allowed; }
+
+.btnPin, .btnHero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background .12s, color .12s;
+  background: var(--bg-2);
+  color: var(--ink-3);
+}
+.btnPin:hover { background: #FEF3C7; color: #92400E; }
+.btnPinActive { background: #FEF3C7; color: #D97706; border-color: #FDE68A; }
+.btnPinActive:hover { background: #FDE68A; }
+.btnHero:hover { background: #ede9fe; color: #5b21b6; }
+.btnHeroActive { background: #ede9fe; color: #5b21b6; border-color: #c4b5fd; }
+.btnHeroActive:hover { background: #c4b5fd; }
