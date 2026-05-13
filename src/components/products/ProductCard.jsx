@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext.jsx';
 import styles from './ProductCard.module.css';
@@ -17,6 +18,7 @@ function Stars({ rating = 0, count = 0 }) {
 
 export default function ProductCard({ product }) {
   const { addToCart, toggleFavorite, favorites } = useCart();
+  const [added, setAdded] = useState(false);
   const isFav = favorites.includes(product._id);
   const isBestSeller = product.tags?.includes('best-seller') || product.tags?.includes('bestseller');
   const outOfStock = product.stock === 0;
@@ -26,7 +28,7 @@ export default function ProductCard({ product }) {
     <div className={`${styles.card} ${outOfStock ? styles.cardSoldOut : ''}`}>
       <Link to={`/produs/${product._id}`} className={styles.imageWrap}>
         {product.images?.[0]
-          ? <img src={product.images[0]} alt={product.name} className={styles.img} />
+          ? <img src={product.images[0]} alt={product.name} className={styles.img} loading="lazy" />
           : <div className={styles.imgPlaceholder} />
         }
         {outOfStock && <div className={styles.soldOutOverlay}>Epuizat</div>}
@@ -56,11 +58,16 @@ export default function ProductCard({ product }) {
         <Stars rating={product.rating || 0} count={product.reviewsCount || 0} />
         {product.short && <p className={styles.short}>{product.short}</p>}
         <button
-          className={styles.addBtn}
+          className={`${styles.addBtn} ${added ? styles.addBtnAdded : ''}`}
           disabled={outOfStock}
-          onClick={() => !outOfStock && addToCart(product)}
+          onClick={() => {
+            if (outOfStock) return;
+            addToCart(product);
+            setAdded(true);
+            setTimeout(() => setAdded(false), 1200);
+          }}
         >
-          {outOfStock ? 'Epuizat' : '+ Adaugă în coș'}
+          {outOfStock ? 'Epuizat' : added ? '✓ Adăugat' : '+ Adaugă în coș'}
         </button>
       </div>
     </div>

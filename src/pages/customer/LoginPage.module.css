@@ -1,15 +1,20 @@
 .page { min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
-.card { width: 100%; max-width: 440px; background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 32px; }
+.card { width: 100%; max-width: 440px; background: var(--bg-2); border: 1px solid var(--line); border-radius: 18px; padding: 32px; box-shadow: var(--shadow-md); }
 .tabs { display: flex; gap: 4px; background: var(--bg-2); padding: 4px; border-radius: 999px; margin-bottom: 28px; }
-.tabs button { flex: 1; padding: 8px; border: none; background: transparent; border-radius: 999px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--ink-2); }
-.tabs button.active { background: #fff; color: var(--ink); }
+.tabs button { flex: 1; padding: 8px; border: none; background: transparent; border-radius: 999px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--ink-2); transition: background .15s, color .15s, box-shadow .15s; }
+.tabs button.active { background: var(--bg-3); color: var(--ink); box-shadow: 0 1px 4px rgba(0,0,0,.25); }
 .card h1 { font-family: var(--serif); font-size: 28px; margin-bottom: 24px; }
 .form { display: flex; flex-direction: column; gap: 14px; }
 .form label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--ink-2); }
-.form input { padding: 11px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; background: var(--bg); color: var(--ink); }
+.form input { padding: 11px 14px; border: 1px solid var(--line); border-radius: 10px; font-size: 14px; background: var(--bg); color: var(--ink); }
 .form input:focus { outline: none; border-color: var(--accent); }
 .form button { margin-top: 8px; padding: 13px; background: var(--ink); color: var(--bg); border: none; border-radius: 999px; font-weight: 600; cursor: pointer; }
 .form button:hover:not(:disabled) { background: var(--accent); }
 .forgotLink { font-size: 12px; color: var(--ink-3); text-align: right; margin-top: -4px; }
 .forgotLink:hover { color: var(--accent); }
 .back { display: block; text-align: center; margin-top: 20px; font-size: 13px; color: var(--ink-2); }
+
+@media (max-width: 480px) {
+  .card { padding: 24px 18px; }
+  .card h1 { font-size: 24px; margin-bottom: 18px; }
+}

@@ -7,16 +7,16 @@
   gap: 8px;
   padding: 12px 20px;
   background: var(--ink);
-  color: #fff;
+  color: var(--bg);
   border: none;
   border-radius: 999px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
 }
-.addBtn:hover { background: var(--choc-2); }
+.addBtn:hover { background: var(--accent); }
 
-.table { background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.table { background: var(--bg-2); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; overflow-x: auto; }
 .theader, .row {
   display: grid;
   grid-template-columns: 1fr 120px 120px 100px 140px 48px;
@@ -52,7 +52,7 @@
 .actions { display: flex; justify-content: flex-end; }
 .editBtn {
   width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--line);
-  background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  background: var(--bg-2); cursor: pointer; display: flex; align-items: center; justify-content: center;
   color: var(--ink-2); transition: all .12s;
 }
 .editBtn:hover { border-color: var(--ink-3); color: var(--ink); }
@@ -62,10 +62,12 @@
 /* Modal */
 .overlay {
   position: fixed; inset: 0; background: rgba(20,15,10,.5);
-  display: flex; align-items: center; justify-content: center;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 24px 16px;
   z-index: 1000; animation: fadeIn .2s ease; backdrop-filter: blur(4px);
+  overflow-y: auto;
 }
-.modal { background: #fff; border-radius: 20px; width: 100%; max-width: 480px; animation: scaleIn .2s ease; }
+.modal { background: var(--bg-2); border-radius: 20px; width: 100%; max-width: 480px; animation: scaleIn .2s ease; }
 .modalHead {
   display: flex; justify-content: space-between; align-items: center;
   padding: 24px 28px; border-bottom: 1px solid var(--line);
@@ -92,11 +94,17 @@
 .checkRow input { width: auto !important; }
 .formActions { display: flex; gap: 10px; justify-content: flex-end; padding-top: 8px; }
 .cancelBtn {
-  padding: 10px 20px; border: 1.5px solid var(--line); background: #fff;
+  padding: 10px 20px; border: 1.5px solid var(--line); background: var(--bg-2);
   border-radius: 10px; font-size: 14px; cursor: pointer; color: var(--ink-2);
 }
 .saveBtn {
-  padding: 10px 24px; background: var(--ink); color: #fff; border: none;
+  padding: 10px 24px; background: var(--ink); color: var(--bg); border: none;
   border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer;
 }
-.saveBtn:hover { background: var(--choc-2); }
+.saveBtn:hover { background: var(--accent); }
+
+@media (max-width: 768px) {
+  .head { flex-direction: column; gap: 12px; align-items: flex-start; }
+  .head h1 { font-size: 28px; }
+  .theader, .row { min-width: 640px; }
+}

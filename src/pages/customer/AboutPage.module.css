@@ -97,3 +97,17 @@
   color: var(--ink-3);
 }
 .statDiv { width: 1px; height: 48px; background: var(--line); }
+
+@media (max-width: 768px) {
+  .statsBox { flex-direction: column; gap: 20px; padding: 28px 24px; align-items: flex-start; }
+  .statDiv { width: 40px; height: 1.5px; }
+  .statNum { font-size: 32px; }
+}
+@media (max-width: 480px) {
+  .page { padding: 36px 0 60px; }
+  .intro { margin-bottom: 32px; }
+  .imgWrap { margin-bottom: 32px; }
+  .body { gap: 20px; margin-bottom: 40px; }
+  .body p { font-size: 16px; }
+  .statsBox { padding: 24px 18px; }
+}

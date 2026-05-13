@@ -7,7 +7,7 @@
   gap: 8px;
   padding: 12px 20px;
   background: var(--ink);
-  color: #fff;
+  color: var(--bg);
   border: none;
   border-radius: 999px;
   font-size: 14px;
@@ -15,7 +15,7 @@
   cursor: pointer;
   transition: background .15s;
 }
-.addBtn:hover { background: var(--choc-2); }
+.addBtn:hover { background: var(--accent); }
 
 .toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
 .searchInput {
@@ -23,7 +23,7 @@
   border: 1.5px solid var(--line);
   border-radius: 10px;
   font-size: 14px;
-  background: #fff;
+  background: var(--bg-2);
   color: var(--ink);
   outline: none;
   transition: border-color .15s;
@@ -33,7 +33,7 @@
 .searchCount { font-size: 13px; color: var(--ink-3); }
 
 .table {
-  background: #fff;
+  background: var(--bg-2);
   border: 1px solid var(--line);
   border-radius: 16px;
   overflow: hidden;
@@ -87,7 +87,7 @@
   height: 32px;
   border-radius: 8px;
   border: 1px solid var(--line);
-  background: #fff;
+  background: var(--bg-2);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -114,7 +114,7 @@
   backdrop-filter: blur(4px);
 }
 .modal {
-  background: #fff;
+  background: var(--bg-2);
   border-radius: 20px;
   width: 100%;
   max-width: 720px;
@@ -187,14 +187,14 @@
   cursor: text;
   transition: border-color .15s;
 }
-.chipInput:focus-within { border-color: var(--ink-3); background: #fff; }
+.chipInput:focus-within { border-color: var(--ink-3); background: var(--bg-2); }
 .chipTag {
   display: inline-flex;
   align-items: center;
   gap: 3px;
   padding: 3px 6px 3px 10px;
   background: var(--ink);
-  color: #fff;
+  color: var(--bg);
   border-radius: 999px;
   font-size: 12px;
   font-weight: 500;
@@ -204,7 +204,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: rgba(255,255,255,.65);
+  color: rgba(255,255,255,.55);
   font-size: 15px;
   line-height: 1;
   padding: 0 2px;
@@ -264,3 +264,15 @@
   transition: background .15s, color .15s;
 }
 .loadMore:hover { background: var(--bg-3); color: var(--ink); }
+
+@media (max-width: 768px) {
+  .head { flex-direction: column; gap: 12px; align-items: flex-start; }
+  .head h1 { font-size: 28px; }
+  .table { overflow-x: auto; }
+  .theader, .row { min-width: 680px; }
+  .form { grid-template-columns: 1fr; padding: 20px; }
+  .modalHead { padding: 18px 20px; }
+  .modalHead h2 { font-size: 20px; }
+  .formActions { justify-content: stretch; }
+  .formActions button { flex: 1; }
+}

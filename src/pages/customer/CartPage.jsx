@@ -34,15 +34,19 @@ export default function CartPage() {
               </div>
               <div className={styles.info}>
                 <div className={styles.name}>{i.name}</div>
-                <div className={styles.price}>{i.price.toFixed(2)} lei</div>
+                <div className={styles.price}>{i.price.toFixed(2)} lei / buc</div>
               </div>
-              <div className={styles.qty}>
-                <button onClick={() => updateQty(i.product, i.qty - 1)}>−</button>
-                <span>{i.qty}</span>
-                <button onClick={() => updateQty(i.product, i.qty + 1)}>+</button>
+              <div className={styles.right}>
+                <div className={styles.qty}>
+                  <button onClick={() => updateQty(i.product, i.qty - 1)}>−</button>
+                  <span>{i.qty}</span>
+                  <button onClick={() => updateQty(i.product, i.qty + 1)}>+</button>
+                </div>
+                <div className={styles.lineTotal}>{(i.price * i.qty).toFixed(2)} lei</div>
+                <button className={styles.remove} onClick={() => removeFromCart(i.product)} aria-label="Șterge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
               </div>
-              <div className={styles.lineTotal}>{(i.price * i.qty).toFixed(2)} lei</div>
-              <button className={styles.remove} onClick={() => removeFromCart(i.product)}>×</button>
             </div>
           ))}
         </div>

@@ -1,5 +1,5 @@
 .page { padding: 40px 0; }
-.title { font-family: var(--serif); font-size: 48px; margin-bottom: 28px; }
+.title { font-family: var(--serif); font-size: clamp(28px, 8vw, 48px); margin-bottom: 28px; }
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

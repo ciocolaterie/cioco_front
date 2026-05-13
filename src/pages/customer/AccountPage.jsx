@@ -140,7 +140,7 @@ export default function AccountPage() {
             </div>
           : <div className={styles.list}>
               {orders.slice(0, visibleOrders).map(o => (
-                <Link key={o._id} to={`/comanda/${o._id}`} className={styles.order}>
+                <Link key={o._id} to={`/comanda/${o._id}`} className={styles.order} data-status={o.status}>
                   <div>
                     <div className={styles.no}>{o.orderNumber}</div>
                     <div className={styles.date}>{fmtDateTime(o.createdAt)}</div>

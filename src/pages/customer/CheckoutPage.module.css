@@ -1,8 +1,8 @@
 .page { padding: 40px 0; }
-.title { font-family: var(--serif); font-size: 42px; margin-bottom: 28px; }
+.title { font-family: var(--serif); font-size: clamp(26px, 7.5vw, 42px); margin-bottom: 28px; }
 .grid { display: grid; grid-template-columns: 1fr 380px; gap: 28px; align-items: start; }
 .col { display: flex; flex-direction: column; gap: 16px; }
-.card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 24px; }
+.card { background: var(--bg-2); border: 1px solid var(--line); border-radius: 14px; padding: 24px; }
 .card h3 { font-family: var(--serif); font-size: 20px; margin-bottom: 16px; }
 .methods { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .method { display: flex; gap: 12px; padding: 16px; border: 1px solid var(--line); border-radius: 12px; cursor: pointer; }
@@ -18,7 +18,7 @@
 .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .fields label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--ink-2); }
 .full { grid-column: 1 / -1; }
-.fields input, .fields textarea { padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; background: var(--bg); color: var(--ink); }
+.fields input, .fields textarea { padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; font-size: 14px; background: var(--bg); color: var(--ink); }
 .fields input:focus, .fields textarea:focus { outline: none; border-color: var(--accent); }
 .payment { padding: 16px; background: var(--bg-2); border-radius: 10px; }
 .payment strong { display: block; margin-bottom: 4px; }
@@ -35,12 +35,12 @@
 .promoRow { display: flex; gap: 8px; margin-top: 12px; }
 .promoInput {
   flex: 1; padding: 10px 14px; border: 1.5px solid var(--line);
-  border-radius: 10px; font-size: 14px; outline: none; background: #fff;
+  border-radius: 10px; font-size: 14px; outline: none; background: var(--bg-2);
   text-transform: uppercase; letter-spacing: .05em;
 }
 .promoInput:focus { border-color: var(--ink-3); }
 .promoBtn {
-  padding: 10px 16px; border: 1.5px solid var(--line); background: #fff;
+  padding: 10px 16px; border: 1.5px solid var(--line); background: var(--bg-2);
   border-radius: 10px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--ink);
   white-space: nowrap;
 }
@@ -49,3 +49,12 @@
 .promoError { font-size: 13px; color: #DC2626; margin-top: 6px; }
 .discount { color: #059669; }
 @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px) {
+  .methods { grid-template-columns: 1fr; }
+  .fields { grid-template-columns: 1fr; }
+  .zoneRow { grid-template-columns: 1fr 1fr; }
+  .card { padding: 18px; }
+}
+@media (max-width: 400px) {
+  .zoneRow { grid-template-columns: 1fr; }
+}

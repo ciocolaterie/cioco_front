@@ -8,7 +8,7 @@
 .inner { text-align: center; }
 .icon {
   width: 64px; height: 64px; border-radius: 50%;
-  background: #FEF2F2; color: #DC2626;
+  background: rgba(220,38,38,.12); color: #DC2626;
   font-size: 24px; font-weight: 700;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 20px;
@@ -17,7 +17,7 @@
 .desc { color: var(--ink-2); font-size: 15px; margin-bottom: 28px; }
 .btn {
   padding: 11px 24px;
-  background: var(--ink); color: #fff; border: none;
+  background: var(--ink); color: var(--bg); border: none;
   border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer;
   transition: background .15s;
 }

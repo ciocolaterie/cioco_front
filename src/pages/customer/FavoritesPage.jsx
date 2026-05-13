@@ -15,7 +15,7 @@ export default function FavoritesPage() {
   useEffect(() => {
     if (favorites.length === 0) { setAll([]); return; }
     listProducts({ ids: favorites.join(',') }).then(setAll).catch(() => setAll([]));
-  }, []);
+  }, [favorites.join(',')]); // eslint-disable-line
   if (!all) return <div className="container" style={{ padding: '40px 0' }}><SkeletonGrid count={4} /></div>;
   const favs = all;
   return (

@@ -1,5 +1,6 @@
 import { NavLink, Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
+import useStoreInfo from '../../hooks/useStoreInfo.js';
 import styles from './AdminLayout.module.css';
 
 const NAV = [
@@ -14,6 +15,7 @@ const NAV = [
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
+  const { storeName } = useStoreInfo();
   const nav = useNavigate();
   const initials = user?.name?.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase() || 'A';
 
@@ -21,10 +23,10 @@ export default function AdminLayout() {
     <div className={styles.shell}>
       <aside className={styles.sidebar}>
         <div className={styles.brand}>
-          <div className={styles.brandMark}>c</div>
+          <div className={styles.brandMark}>{(storeName || 'C')[0].toLowerCase()}</div>
           <div>
             <div className={styles.brandTitle}>Admin</div>
-            <div className={styles.brandSub}>CIOCOLATERIE</div>
+            <div className={styles.brandSub}>{(storeName || 'Magazin').toUpperCase()}</div>
           </div>
         </div>
 

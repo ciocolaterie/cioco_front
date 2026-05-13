@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getProduct } from '../../services/products.service.js';
 import { getProductReviews, submitReview } from '../../services/reviews.service.js';
@@ -40,6 +40,9 @@ export default function ProductPage() {
   const { addToCart, toggleFavorite, favorites } = useCart();
   const toast = useToast();
 
+  const actionsRef = useRef(null);
+  const [stickyVisible, setStickyVisible] = useState(false);
+
   const [reviews, setReviews] = useState(null);
   const [showAll, setShowAll] = useState(false);
   const [reviewForm, setReviewForm] = useState({ name: '', email: '', rating: 0, text: '' });
@@ -53,6 +56,14 @@ export default function ProductPage() {
   useEffect(() => {
     if (user) setReviewForm(f => ({ ...f, name: user.name || '', email: user.email || '' }));
   }, [user]);
+
+  useEffect(() => {
+    const el = actionsRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => setStickyVisible(!entry.isIntersecting), { threshold: 0 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [p]);
   if (error) return (
     <div className={`container ${styles.page}`} style={{ textAlign: 'center', padding: '4rem 1rem' }}>
       <p style={{ fontSize: '1.1rem', color: '#6b7280' }}>Produsul nu a fost găsit.</p>
@@ -116,7 +127,7 @@ export default function ProductPage() {
           <p className={styles.short}>{p.short}</p>
           <div className={styles.price}>{p.price?.toFixed(2)} lei</div>
 
-          <div className={styles.actions}>
+          <div ref={actionsRef} className={styles.actions}>
             <div className={styles.qty}>
               <button onClick={() => setQty(q => Math.max(1, q - 1))}>−</button>
               <span>{qty}</span>
@@ -154,6 +165,20 @@ export default function ProductPage() {
         </div>
       </div>
 
+      {stickyVisible && (
+        <div className={styles.stickyBar}>
+          <div className={styles.stickyInfo}>
+            <span className={styles.stickyName}>{p.name}</span>
+            <span className={styles.stickyPrice}>{p.price?.toFixed(2)} lei</span>
+          </div>
+          <button
+            className={styles.stickyAdd}
+            disabled={p.stock === 0}
+            onClick={() => { addToCart(p, qty); toast({ title: 'Adăugat în coș', body: `${qty} × ${p.name}` }); }}
+          >{p.stock === 0 ? 'Stoc epuizat' : 'Adaugă în coș'}</button>
+        </div>
+      )}
+
       {/* REVIEWS */}
       <div className={styles.reviewsSection}>
         <h2 className={styles.reviewsTitle}>
@@ -167,7 +192,7 @@ export default function ProductPage() {
           {submitted ? (
             <div className={styles.reviewSuccess}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              Recenzia ta a fost publicată! Mulțumim.
+              Recenzia ta a fost trimisă și va fi publicată după verificare. Mulțumim!
             </div>
           ) : (
             <form onSubmit={handleSubmitReview} className={styles.reviewForm}>

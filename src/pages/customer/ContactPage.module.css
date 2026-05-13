@@ -98,7 +98,7 @@ a.contactValue:hover { color: var(--accent); }
   padding: 12px 16px;
   border: 1.5px solid var(--line);
   border-radius: 10px;
-  background: #fff;
+  background: var(--bg-2);
   font-size: 14px;
   color: var(--ink);
   outline: none;
@@ -109,16 +109,21 @@ a.contactValue:hover { color: var(--accent); }
 .btn {
   padding: 16px;
   background: var(--ink);
-  color: #fff;
+  color: var(--bg);
   border: none;
-  border-radius: 10px;
+  border-radius: 999px;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: background .15s;
 }
-.btn:hover { background: var(--choc-2); }
+.btn:hover { background: var(--accent); }
 
+@keyframes popIn {
+  0%   { opacity: 0; transform: scale(.4); }
+  65%  { transform: scale(1.15); }
+  100% { opacity: 1; transform: scale(1); }
+}
 .sent {
   text-align: center;
   padding: 40px 20px;
@@ -135,8 +140,15 @@ a.contactValue:hover { color: var(--accent); }
   align-items: center;
   justify-content: center;
   margin: 0 auto 16px;
+  animation: popIn .45s cubic-bezier(.34,1.56,.64,1);
 }
 
 @media (max-width: 900px) {
   .grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .page { padding: 40px 0 60px; }
+  .intro { margin-bottom: 36px; }
+  .formCard { padding: 24px 18px; }
+  .formTitle { font-size: 22px; margin-bottom: 18px; }
 }

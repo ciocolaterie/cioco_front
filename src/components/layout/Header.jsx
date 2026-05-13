@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useCart } from '../../context/CartContext.jsx';
@@ -23,6 +23,13 @@ export default function Header() {
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const onSearch = (e) => {
     e.preventDefault();
@@ -34,7 +41,7 @@ export default function Header() {
   };
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.row}`}>
         <Link to="/" className={styles.logo} onClick={() => setOpen(false)}>
           <span className={styles.mark}>{(storeName || 'C')[0].toLowerCase()}</span>
@@ -67,21 +74,23 @@ export default function Header() {
             {favorites.length > 0 && <span className={styles.badge}>{favorites.length}</span>}
           </Link>
 
-          {user ? (
-            <Link to={isAdmin ? '/admin' : '/cont'} className={styles.avatarBtn} title={user.name}>
-              <span className={styles.avatar}>{initials(user.name)}</span>
-              <span className={styles.avatarName}>{user.name.split(' ')[0]}</span>
-            </Link>
-          ) : (
-            <Link to="/login" className={styles.loginBtn}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-              </svg>
-              Login
-            </Link>
-          )}
+          <span className={styles.userArea}>
+            {user ? (
+              <Link to={isAdmin ? '/admin' : '/cont'} className={styles.avatarBtn} title={user.name}>
+                <span className={styles.avatar}>{initials(user.name)}</span>
+                <span className={styles.avatarName}>{user.name.split(' ')[0]}</span>
+              </Link>
+            ) : (
+              <Link to="/login" className={styles.loginBtn}>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+                Login
+              </Link>
+            )}
+          </span>
 
-          <Link to="/cos" className={styles.iconBtn} title="Coș">
+          <Link to="/cos" className={`${styles.iconBtn} ${styles.cartLink}`} title="Coș">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
               <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
             </svg>

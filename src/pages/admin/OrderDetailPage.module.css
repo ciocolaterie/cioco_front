@@ -5,7 +5,7 @@
 .actions { display: flex; gap: 8px; }
 
 .grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
-.card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 24px; }
+.card { background: var(--bg-2); border: 1px solid var(--line); border-radius: 14px; padding: 24px; }
 .card h3 { font-family: var(--serif); font-size: 18px; margin-bottom: 16px; }
 .side { display: flex; flex-direction: column; gap: 20px; }
 
@@ -26,9 +26,51 @@
 .contactBtn { padding: 10px; text-align: center; background: var(--bg-2); border-radius: 8px; font-size: 13px; font-weight: 600; }
 .contactBtn:hover { background: var(--line); }
 
-.note { margin-top: 12px; padding: 12px; background: #FEF3C7; border-radius: 8px; font-size: 13px; }
-.history { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
-.history li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--line); font-size: 13px; }
+.note { margin-top: 12px; padding: 12px; background: rgba(196,129,58,.12); border-radius: 8px; font-size: 13px; color: var(--ink-2); border: 1px solid rgba(196,129,58,.25); }
+.history {
+  list-style: none;
+  padding: 0 0 0 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+.history::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 8px;
+  bottom: 8px;
+  width: 1.5px;
+  background: var(--line);
+}
+.history li {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0 10px 16px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.history li:last-child { border: none; }
+.history li::before {
+  content: '';
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--line);
+  border: 2px solid var(--bg-2);
+}
+.history li:first-child::before {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(123,61,29,.18);
+}
 .history li span { color: var(--ink-2); font-size: 12px; }
 
 /* Confirm modal */
@@ -38,7 +80,7 @@
   z-index: 1000; backdrop-filter: blur(4px); animation: fadeIn .15s ease;
 }
 .confirmModal {
-  background: #fff; border-radius: 16px; padding: 28px 32px;
+  background: var(--bg-2); border-radius: 16px; padding: 28px 32px;
   width: 100%; max-width: 380px; animation: scaleIn .18s ease;
   text-align: center;
 }
@@ -46,14 +88,25 @@
 .confirmModal p { font-size: 13px; color: var(--ink-2); margin-bottom: 24px; }
 .confirmActions { display: flex; gap: 10px; justify-content: center; }
 .confirmCancel {
-  padding: 10px 20px; border: 1.5px solid var(--line); background: #fff;
+  padding: 10px 20px; border: 1.5px solid var(--line); background: var(--bg-2);
   border-radius: 10px; font-size: 14px; cursor: pointer; color: var(--ink-2);
 }
 .confirmCancel:hover { border-color: var(--ink-3); }
 .confirmOk {
-  padding: 10px 20px; background: var(--ink); color: #fff; border: none;
+  padding: 10px 20px; background: var(--ink); color: var(--bg); border: none;
   border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer;
 }
 .confirmOk:hover { background: var(--accent); }
 .confirmDanger { background: #DC2626; }
 .confirmDanger:hover { background: #b91c1c; }
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; }
+  .head { flex-direction: column; gap: 12px; }
+  .head h1 { font-size: 24px; }
+  .actions { flex-wrap: wrap; }
+  .contactBtns { grid-template-columns: 1fr; }
+  .itemRow { grid-template-columns: 40px 1fr auto; }
+  .price { display: none; }
+  .card { padding: 18px; }
+}

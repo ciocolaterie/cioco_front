@@ -10,11 +10,11 @@ export default function LoginPage() {
   const toast = useToast();
   const nav = useNavigate();
   const [mode, setMode] = useState('login');
-
-  if (!loading && user) return <Navigate to={isAdmin ? '/admin' : '/cont'} replace />;
-  usePageTitle(mode === 'login' ? 'Login' : 'Înregistrare');
   const [form, setForm] = useState({ name: '', email: '', phone: '', password: '' });
   const [busy, setBusy] = useState(false);
+  usePageTitle(mode === 'login' ? 'Login' : 'Înregistrare');
+
+  if (!loading && user) return <Navigate to={isAdmin ? '/admin' : '/cont'} replace />;
 
   const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
 

@@ -73,7 +73,7 @@
   transition: color .15s, background .15s;
   z-index: 1;
 }
-.favBtn:hover { background: #fff; color: var(--accent); }
+.favBtn:hover { background: var(--bg-2); color: var(--accent); }
 .favActive { color: var(--accent) !important; }
 
 .body {
@@ -144,7 +144,7 @@
   width: 100%;
   padding: 10px 12px;
   background: var(--ink);
-  color: #fff;
+  color: var(--bg);
   border: none;
   border-radius: 999px;
   font-size: 13px;
@@ -154,6 +154,7 @@
 }
 .addBtn:hover:not(:disabled) { background: var(--accent); }
 .addBtn:disabled { background: var(--bg-3); color: var(--ink-3); cursor: not-allowed; }
+.addBtnAdded { background: #059669 !important; }
 
 .soldOutOverlay {
   position: absolute;

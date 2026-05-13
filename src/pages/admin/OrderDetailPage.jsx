@@ -103,7 +103,7 @@ export default function OrderDetailPage() {
             <div className={styles.field}><span>Email</span><a href={`mailto:${o.customer.email}`}>{o.customer.email}</a></div>
             <div className={styles.contactBtns}>
               <a href={`tel:${o.customer.phone}`} className={styles.contactBtn}>📞 Sună</a>
-              <a href={`https://wa.me/4${o.customer.phone.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className={styles.contactBtn}>💬 WhatsApp</a>
+              <a href={`https://wa.me/${(() => { const d = o.customer.phone.replace(/\D/g, ''); return d.startsWith('0') ? `40${d.slice(1)}` : d; })()}`} target="_blank" rel="noreferrer" className={styles.contactBtn}>💬 WhatsApp</a>
             </div>
           </section>
 

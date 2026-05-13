@@ -4,7 +4,7 @@
   min-height: 100vh;
 }
 .sidebar {
-  background: var(--ink);
+  background: #1C1410;
   color: #cfc6bd;
   padding: 0;
   display: flex;
@@ -71,6 +71,7 @@
 .navActive {
   background: rgba(255,255,255,.1) !important;
   color: #fff !important;
+  box-shadow: inset 3px 0 0 var(--accent);
 }
 .navIcon { flex-shrink: 0; opacity: .8; }
 .navActive .navIcon { opacity: 1; }
@@ -101,7 +102,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--choc-2) 0%, var(--accent) 100%);
   color: #fff;
   font-size: 13px;
   font-weight: 700;
@@ -136,4 +137,53 @@
   background: var(--bg);
   padding: 40px 48px;
   min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .brand {
+    padding: 12px 16px;
+    border-bottom: none;
+    border-right: 1px solid rgba(255,255,255,.06);
+    flex-shrink: 0;
+  }
+  .brandTitle, .brandSub { display: none; }
+  .nav {
+    flex-direction: row;
+    padding: 8px;
+    gap: 2px;
+    flex: 1;
+    overflow-x: auto;
+  }
+  .navItem {
+    flex-direction: column;
+    gap: 3px;
+    padding: 8px 10px;
+    font-size: 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .foot {
+    border-top: none;
+    border-left: 1px solid rgba(255,255,255,.06);
+    padding: 8px;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .backLink, .userInfo { display: none; }
+  .main {
+    padding: 24px 20px;
+  }
 }

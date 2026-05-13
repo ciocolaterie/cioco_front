@@ -12,7 +12,8 @@
 .headLeft { display: flex; align-items: center; gap: 20px; }
 .avatar {
   width: 56px; height: 56px; border-radius: 50%;
-  background: var(--ink); color: #fff;
+  background: linear-gradient(135deg, var(--choc-2) 0%, var(--accent) 100%);
+  color: #fff;
   font-size: 18px; font-weight: 700;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
@@ -22,13 +23,13 @@
 .headActions { display: flex; gap: 8px; align-items: center; }
 
 .editBtn {
-  padding: 9px 18px; border: 1.5px solid var(--line); background: #fff;
+  padding: 9px 18px; border: 1.5px solid var(--line); background: var(--bg-2);
   border-radius: 999px; font-size: 13px; font-weight: 500; cursor: pointer;
   transition: border-color .15s, background .15s;
 }
 .editBtn:hover { border-color: var(--ink-3); background: var(--bg-2); }
 .logout {
-  padding: 9px 18px; border: 1.5px solid var(--line); background: #fff;
+  padding: 9px 18px; border: 1.5px solid var(--line); background: var(--bg-2);
   border-radius: 999px; font-size: 13px; cursor: pointer;
   transition: border-color .15s, color .15s;
 }
@@ -56,29 +57,63 @@
 .editFields input {
   padding: 10px 14px; border: 1.5px solid var(--line);
   border-radius: 10px; font-size: 14px; color: var(--ink);
-  background: #fff; outline: none;
+  background: var(--bg-2); outline: none;
 }
 .editFields input:focus { border-color: var(--ink-3); }
 .saveBtn {
-  padding: 11px 24px; background: var(--ink); color: #fff; border: none;
+  padding: 11px 24px; background: var(--ink); color: var(--bg); border: none;
   border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer;
 }
 .saveBtn:hover:not(:disabled) { background: var(--accent); }
 .saveBtn:disabled { opacity: .5; cursor: not-allowed; }
 
 .page h2 { font-family: var(--serif); font-size: 24px; margin-bottom: 16px; }
-.list { display: flex; flex-direction: column; gap: 8px; }
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  padding-left: 28px;
+}
+.list::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 16px;
+  bottom: 16px;
+  width: 1.5px;
+  background: var(--line);
+}
 .order {
   display: grid;
   grid-template-columns: 1.2fr 1fr auto auto;
   gap: 20px;
   align-items: center;
   padding: 18px 20px;
-  background: #fff;
+  background: var(--bg-2);
   border: 1px solid var(--line);
   border-radius: 12px;
   transition: border-color .15s, background .15s;
+  position: relative;
 }
+.order::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--line);
+  border: 2.5px solid var(--bg);
+  box-shadow: 0 0 0 1.5px var(--line);
+}
+.order[data-status='noua']::before      { background: #A0451B; box-shadow: 0 0 0 1.5px #A0451B; }
+.order[data-status='in_pregatire']::before { background: #92400E; box-shadow: 0 0 0 1.5px #92400E; }
+.order[data-status='gata']::before      { background: #065F46; box-shadow: 0 0 0 1.5px #065F46; }
+.order[data-status='livrata']::before   { background: #6B7280; box-shadow: 0 0 0 1.5px #6B7280; }
+.order[data-status='anulata']::before   { background: #991B1B; box-shadow: 0 0 0 1.5px #991B1B; }
 .order:hover { border-color: var(--ink-3); background: var(--bg-2); }
 .no { font-family: var(--serif); font-size: 18px; }
 .date { font-size: 12px; color: var(--ink-2); }

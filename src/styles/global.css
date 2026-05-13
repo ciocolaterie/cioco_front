@@ -1,22 +1,22 @@
 :root {
-  --bg: #FAF8F5;
-  --bg-2: #F0EBE4;
-  --bg-3: #E5DDD4;
+  --bg: #FFFFFF;
+  --bg-2: #FAF9F7;
+  --bg-3: #F2EDE8;
   --ink: #1C1410;
-  --ink-2: #6B5E55;
-  --ink-3: #A0918A;
-  --line: #E0D8CE;
-  --accent: #8B3E2A;
-  --accent-2: #A0522D;
-  --choc: #1a0d05;
-  --choc-2: #3d1f0c;
-  --choc-3: #5c3010;
-  --serif: 'DM Serif Display', serif;
-  --sans: 'DM Sans', system-ui, sans-serif;
+  --ink-2: #6B5A52;
+  --ink-3: #A39088;
+  --line: rgba(28,20,16,.09);
+  --accent: #7B3D1D;
+  --accent-2: #9B5233;
+  --choc: #3D1E0A;
+  --choc-2: #5C3317;
+  --choc-3: #7A4523;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Inter', -apple-system, system-ui, sans-serif;
   --mono: 'JetBrains Mono', monospace;
-  --radius: 16px;
-  --shadow: 0 4px 20px rgba(28,20,16,.08);
-  --shadow-md: 0 8px 32px rgba(28,20,16,.12);
+  --radius: 14px;
+  --shadow: 0 2px 16px rgba(28,20,16,.07);
+  --shadow-md: 0 8px 40px rgba(28,20,16,.12);
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
@@ -36,6 +36,19 @@ h1, h2, h3, h4 { text-wrap: balance; margin: 0; font-weight: 400; }
 p { text-wrap: pretty; margin: 0; }
 ::selection { background: var(--accent); color: #fff; }
 
+input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(123,61,29,.18);
+}
+button:active:not(:disabled) { transform: scale(.97); }
+
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes scaleIn { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: scale(1); } }
+
+@media (max-width: 600px) {
+  input, textarea, select { font-size: 16px; }
+}
+@media (max-width: 600px) {
+  .container { padding: 0 20px; }
+}

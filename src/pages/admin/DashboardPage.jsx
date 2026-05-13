@@ -132,7 +132,7 @@ export default function DashboardPage() {
 
 function KPI({ label, value, trend }) {
   return (
-    <div className={styles.kpi}>
+    <div className={`${styles.kpi} ${trend ? (trend.up ? styles.kpiUp : styles.kpiDown) : ''}`}>
       <div className={styles.kpiLabel}>{label}</div>
       <div className={styles.kpiValue}>{value}</div>
       {trend && (

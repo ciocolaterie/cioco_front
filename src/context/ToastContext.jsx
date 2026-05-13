@@ -3,6 +3,28 @@ import styles from './Toast.module.css';
 
 const ToastContext = createContext(null);
 
+const WARNINGS = new Set([
+  'Completează datele de contact',
+  'Adresa de livrare e obligatorie',
+  'Parolele nu se potrivesc',
+  'Parola trebuie să aibă cel puțin 6 caractere',
+  'Maxim 3 recenzii pot fi afișate în testimoniale',
+]);
+
+const TYPE_CLASS = {
+  success: styles.toastSuccess,
+  error:   styles.toastError,
+  warning: styles.toastWarning,
+  default: styles.toastDefault,
+};
+
+function inferType({ type, title = '' }) {
+  if (type) return type;
+  if (title.startsWith('Eroare') || title.includes('eroare')) return 'error';
+  if (WARNINGS.has(title)) return 'warning';
+  return 'success';
+}
+
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
   const push = (t) => {
@@ -15,7 +37,7 @@ export function ToastProvider({ children }) {
       {children}
       <div className={styles.wrap}>
         {toasts.map(t => (
-          <div key={t.id} className={styles.toast}>
+          <div key={t.id} className={`${styles.toast} ${TYPE_CLASS[inferType(t)] || ''}`}>
             {t.title && <div className={styles.title}>{t.title}</div>}
             {t.body && <div className={styles.body}>{t.body}</div>}
           </div>

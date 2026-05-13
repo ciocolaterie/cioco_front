@@ -105,7 +105,7 @@ export default function OrdersPage() {
               <span>ACȚIUNI</span>
             </div>
             {shown.map((o) => (
-              <div key={o._id} className={styles.row}>
+              <div key={o._id} className={`${styles.row} ${o.status === 'noua' ? styles.rowNew : ''}`}>
                 <span className={styles.no}>{o.orderNumber}</span>
                 <div>
                   <div className={styles.clientName}>{o.customer.name}</div>
