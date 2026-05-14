@@ -1,3 +1,20 @@
-.wrap { display:flex; align-items:center; gap:10px; padding: 40px; color: var(--ink-2); justify-content:center; }
-.dot { width:14px; height:14px; border-radius:50%; border: 2px solid var(--line); border-top-color: var(--accent); animation: spin .8s linear infinite; }
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 60px 20px;
+  color: var(--ink-3);
+  font-size: 13px;
+  letter-spacing: .04em;
+}
+.dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--bg-3);
+  border-top-color: var(--accent);
+  animation: spin .75s linear infinite;
+}
 @keyframes spin { to { transform: rotate(360deg); } }

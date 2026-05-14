@@ -6,6 +6,8 @@
   display: flex;
   flex-direction: column;
 }
+
+/* ── Image ── */
 .imageWrap {
   position: relative;
   display: block;
@@ -27,21 +29,6 @@
   height: 100%;
   background: linear-gradient(145deg, #1a0d05 0%, #3d1f0c 45%, #5c3010 100%);
 }
-
-.bestBadge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: rgba(255,255,255,.9);
-  color: var(--ink);
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 999px;
-  letter-spacing: .01em;
-  backdrop-filter: blur(4px);
-}
-
 .imgCaption {
   position: absolute;
   bottom: 0;
@@ -55,12 +42,53 @@
   background: linear-gradient(to top, rgba(0,0,0,.4), transparent);
 }
 
+/* ── Badges ── */
+.bestBadge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(255,255,255,.92);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: .01em;
+  backdrop-filter: blur(4px);
+}
+.lowStockBadge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #FEF3C7;
+  color: #92400E;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.soldOutOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(28,20,16,.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: rgba(255,255,255,.9);
+  backdrop-filter: blur(2px);
+}
+.cardSoldOut .img { opacity: .7; }
+
+/* ── Fav button ── */
 .favBtn {
   position: absolute;
   top: 12px;
   right: 12px;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   border: none;
   background: rgba(255,255,255,.9);
@@ -76,8 +104,9 @@
 .favBtn:hover { background: var(--bg-2); color: var(--accent); }
 .favActive { color: var(--accent) !important; }
 
+/* ── Body ── */
 .body {
-  padding: 14px 4px 4px;
+  padding: 14px 2px 4px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -99,7 +128,7 @@
 .priceBox {
   display: flex;
   align-items: baseline;
-  gap: 4px;
+  gap: 3px;
   flex-shrink: 0;
 }
 .price {
@@ -115,19 +144,16 @@
   letter-spacing: .05em;
 }
 
+/* ── Stars ── */
 .stars {
   display: flex;
   align-items: center;
   gap: 2px;
 }
-.starFull { color: #C9821A; font-size: 13px; }
-.starHalf { color: #C9821A; font-size: 13px; opacity: .6; }
+.starFull  { color: #C9821A; font-size: 13px; }
+.starHalf  { color: #C9821A; font-size: 13px; opacity: .6; }
 .starEmpty { color: var(--line); font-size: 13px; }
-.starsCount {
-  font-size: 12px;
-  color: var(--ink-3);
-  margin-left: 4px;
-}
+.starsCount { font-size: 12px; color: var(--ink-3); margin-left: 4px; }
 
 .short {
   font-size: 13px;
@@ -139,6 +165,7 @@
   overflow: hidden;
 }
 
+/* ── Add to cart button ── */
 .addBtn {
   margin-top: 4px;
   width: 100%;
@@ -150,35 +177,68 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background .15s, opacity .15s;
+  transition: background .15s;
 }
 .addBtn:hover:not(:disabled) { background: var(--accent); }
 .addBtn:disabled { background: var(--bg-3); color: var(--ink-3); cursor: not-allowed; }
 .addBtnAdded { background: #059669 !important; }
 
-.soldOutOverlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(28, 20, 16, .45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  color: rgba(255,255,255,.9);
-  backdrop-filter: blur(2px);
-}
-.cardSoldOut .img { opacity: .7; }
+/* ── Mobile: horizontal card layout ── */
+@media (max-width: 540px) {
+  .card {
+    flex-direction: row;
+    align-items: stretch;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: box-shadow .15s;
+  }
+  .card:hover { box-shadow: var(--shadow); }
 
-.lowStockBadge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: #FEF3C7;
-  color: #92400E;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 999px;
+  .imageWrap {
+    width: 120px;
+    min-width: 120px;
+    aspect-ratio: auto;
+    border-radius: 0;
+    align-self: stretch;
+  }
+  .img { border-radius: 0; }
+  .imgCaption { display: none; }
+
+  .favBtn {
+    width: 26px;
+    height: 26px;
+    top: 8px;
+    right: 8px;
+  }
+  .favBtn svg { width: 13px; height: 13px; }
+
+  .bestBadge, .lowStockBadge {
+    font-size: 9px;
+    padding: 3px 7px;
+    top: 8px;
+    left: 8px;
+  }
+
+  .body {
+    padding: 14px 14px 12px;
+    flex: 1;
+    min-width: 0;
+    gap: 4px;
+  }
+  .nameRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .name { font-size: 15px; }
+  .priceBox { margin-top: 2px; }
+  .price { font-size: 18px; }
+  .short { display: none; }
+  .addBtn {
+    margin-top: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
 }

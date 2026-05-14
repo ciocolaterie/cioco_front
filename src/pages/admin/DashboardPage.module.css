@@ -150,16 +150,25 @@
 .empty { padding: 40px; text-align: center; color: var(--ink-3); font-size: 13px; }
 
 @media (max-width: 768px) {
-  .kpis { grid-template-columns: repeat(2, 1fr); }
-  .grid { grid-template-columns: 1fr; }
+  .head { flex-direction: column; gap: 12px; align-items: flex-start; margin-bottom: 24px; }
   .head h1 { font-size: 28px; }
-  .tabs { flex-wrap: wrap; }
+  .tabs { align-self: flex-start; }
   .tabs button { padding: 7px 12px; font-size: 12px; }
-  .card { overflow-x: auto; }
+  .kpis { grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
+  .kpi { padding: 18px; }
+  .kpiValue { font-size: 28px; }
+  .grid { grid-template-columns: 1fr; gap: 12px; }
+  .card { padding: 20px; overflow-x: auto; }
   .topRow, .recentRow { min-width: 480px; }
 }
 @media (max-width: 480px) {
-  .kpis { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .kpi { padding: 16px; }
-  .kpiValue { font-size: 28px; }
+  .head h1 { font-size: 20px; }
+  .kpis { gap: 8px; }
+  .kpi { padding: 12px 14px; border-radius: 12px; }
+  .kpiLabel { font-size: 10px; letter-spacing: .08em; margin-bottom: 6px; }
+  .kpiValue { font-size: 20px; margin-bottom: 4px; }
+  .kpiTrend { flex-wrap: wrap; gap: 2px; }
+  .card { padding: 14px; border-radius: 12px; }
+  .card h3 { font-size: 17px; }
+  .chart { height: 120px; gap: 4px; }
 }

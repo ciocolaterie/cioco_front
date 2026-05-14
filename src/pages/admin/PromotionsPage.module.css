@@ -13,6 +13,7 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  transition: background .2s;
 }
 .addBtn:hover { background: var(--accent); }
 
@@ -87,7 +88,7 @@
 }
 .form input, .form select {
   padding: 10px 14px; border: 1.5px solid var(--line); border-radius: 10px;
-  font-size: 14px; color: var(--ink); background: var(--bg); outline: none;
+  font-size: 14px; font-family: inherit; color: var(--ink); background: var(--bg); outline: none;
 }
 .form input:focus, .form select:focus { border-color: var(--ink-3); }
 .checkRow { flex-direction: row !important; align-items: center; gap: 8px; }

@@ -16,15 +16,15 @@
 .row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
 .row span:first-child { color: var(--ink-2); }
 .total { font-weight: 700; font-size: 16px; padding-top: 12px; border-top: 1px solid var(--line); margin-top: 8px; }
-.payment { margin-top: 16px; padding: 12px; background: var(--bg-2); border-radius: 10px; font-size: 13px; }
+.payment { margin-top: 16px; padding: 12px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; font-size: 13px; display: flex; align-items: center; gap: 8px; }
 
 .field { display: flex; justify-content: space-between; padding: 8px 0; font-size: 13px; gap: 12px; border-bottom: 1px solid var(--line); }
 .field:last-of-type { border: none; }
 .field span:first-child { color: var(--ink-2); }
 .field a { color: var(--accent); }
 .contactBtns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
-.contactBtn { padding: 10px; text-align: center; background: var(--bg-2); border-radius: 8px; font-size: 13px; font-weight: 600; }
-.contactBtn:hover { background: var(--line); }
+.contactBtn { padding: 10px; text-align: center; background: var(--bg-2); border-radius: 8px; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background .15s, color .15s; }
+.contactBtn:hover { background: var(--bg-3); color: var(--ink); }
 
 .note { margin-top: 12px; padding: 12px; background: rgba(196,129,58,.12); border-radius: 8px; font-size: 13px; color: var(--ink-2); border: 1px solid rgba(196,129,58,.25); }
 .history {
@@ -72,6 +72,10 @@
   box-shadow: 0 0 0 3px rgba(123,61,29,.18);
 }
 .history li span { color: var(--ink-2); font-size: 12px; }
+.historyEmpty { font-size: 13px; color: var(--ink-2); }
+.errorWrap { text-align: center; padding: 48px 20px; }
+.errorText { color: var(--ink-2); margin-bottom: 12px; font-size: 15px; }
+.errorLink { color: var(--accent); font-weight: 600; font-size: 14px; }
 
 /* Confirm modal */
 .overlay {

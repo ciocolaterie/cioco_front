@@ -17,9 +17,9 @@ export default function OrderDetailPage() {
 
   useEffect(() => { getOrder(id).then(setO).catch(() => setError(true)); }, [id]);
   if (error) return (
-    <div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280' }}>
-      <p>Comanda nu a putut fi încărcată.</p>
-      <Link to="/admin/comenzi">← Înapoi la comenzi</Link>
+    <div className={styles.errorWrap}>
+      <p className={styles.errorText}>Comanda nu a putut fi încărcată.</p>
+      <Link to="/admin/comenzi" className={styles.errorLink}>← Înapoi la comenzi</Link>
     </div>
   );
   if (!o) return <Spinner />;
@@ -92,7 +92,10 @@ export default function OrderDetailPage() {
           {o.deliveryFee > 0 && <div className={styles.row}><span>Livrare</span><span>{fmt(o.deliveryFee)} lei</span></div>}
           {o.discount > 0 && <div className={styles.row}><span>Discount ({o.promoCode})</span><span>−{fmt(o.discount)} lei</span></div>}
           <div className={`${styles.row} ${styles.total}`}><span>Total</span><span>{fmt(o.total)} lei</span></div>
-          <div className={styles.payment}>💵 Plată cash la {o.method === 'livrare' ? 'livrare' : 'ridicare'}</div>
+          <div className={styles.payment}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>
+            Plată cash la {o.method === 'livrare' ? 'livrare' : 'ridicare'}
+          </div>
         </section>
 
         <aside className={styles.side}>
@@ -102,8 +105,14 @@ export default function OrderDetailPage() {
             <div className={styles.field}><span>Telefon</span><a href={`tel:${o.customer.phone}`}>{o.customer.phone}</a></div>
             <div className={styles.field}><span>Email</span><a href={`mailto:${o.customer.email}`}>{o.customer.email}</a></div>
             <div className={styles.contactBtns}>
-              <a href={`tel:${o.customer.phone}`} className={styles.contactBtn}>📞 Sună</a>
-              <a href={`https://wa.me/${(() => { const d = o.customer.phone.replace(/\D/g, ''); return d.startsWith('0') ? `40${d.slice(1)}` : d; })()}`} target="_blank" rel="noreferrer" className={styles.contactBtn}>💬 WhatsApp</a>
+              <a href={`tel:${o.customer.phone}`} className={styles.contactBtn}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.33 2 2 0 0 1 3.6 1.24h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.84a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.01z"/></svg>
+                Sună
+              </a>
+              <a href={`https://wa.me/${(() => { const d = o.customer.phone.replace(/\D/g, ''); return d.startsWith('0') ? `40${d.slice(1)}` : d; })()}`} target="_blank" rel="noreferrer" className={styles.contactBtn}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                WhatsApp
+              </a>
             </div>
           </section>
 
@@ -123,7 +132,7 @@ export default function OrderDetailPage() {
           <section className={styles.card}>
             <h3>Istoric status</h3>
             {o.statusHistory?.length === 0
-              ? <p style={{ fontSize: 13, color: 'var(--ink-2)' }}>Niciun update.</p>
+              ? <p className={styles.historyEmpty}>Niciun update.</p>
               : <ul className={styles.history}>
                 {o.statusHistory.map((h, k) => (
                   <li key={k}>

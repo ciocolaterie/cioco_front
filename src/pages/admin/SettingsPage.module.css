@@ -3,7 +3,7 @@
 .head p { font-size: 14px; color: var(--ink-3); }
 .saveBtn {
   padding: 12px 24px; background: var(--ink); color: var(--bg); border: none;
-  border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer;
+  border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .2s;
 }
 .saveBtn:hover:not(:disabled) { background: var(--accent); }
 .saveBtn:disabled { opacity: .5; cursor: not-allowed; }
@@ -20,6 +20,7 @@
   border: 1.5px solid var(--line);
   border-radius: 10px;
   font-size: 14px;
+  font-family: inherit;
   color: var(--ink);
   background: var(--bg);
   outline: none;
@@ -125,7 +126,7 @@
 .addTagInput:focus { border-color: var(--ink-3); background: var(--bg-2); }
 .addTagBtn {
   padding: 9px 18px; background: var(--ink); color: var(--bg); border: none;
-  border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer;
+  border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .2s;
 }
 .addTagBtn:hover { background: var(--accent); }
 
@@ -133,4 +134,9 @@
 @media (max-width: 768px) {
   .head { flex-direction: column; gap: 12px; align-items: flex-start; }
   .head h1 { font-size: 28px; }
+}
+@media (max-width: 480px) {
+  .scheduleInput { width: 110px; font-size: 13px; }
+  .addZoneRow { flex-wrap: wrap; }
+  .addZonePriceInput { width: 100%; }
 }

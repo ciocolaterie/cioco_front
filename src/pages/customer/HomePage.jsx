@@ -54,7 +54,7 @@ export default function HomePage() {
             </h1>
             <p className={styles.lead}>
               Praline, tablete signature și cadouri, făcute săptămânal în
-              atelierul nostru{store.storeAddress ? ` din ${store.storeAddress}` : ''}. Comandă online, plătești
+              atelierul nostru<span className={styles.leadAddr}>{store.storeAddress ? ` din ${store.storeAddress}` : ''}</span>. Comandă online, plătești
               numerar la ridicare sau livrare.
             </p>
             <div className={styles.ctas}>
@@ -91,6 +91,22 @@ export default function HomePage() {
                 <span className={styles.statLabel}>COMENZI/LUNĂ</span>
               </div>
             </div>
+
+            {/* Mobile product strip — visible only when heroRight is hidden */}
+            {products && products.length > 0 && (
+              <div className={styles.heroProducts}>
+                {products.slice(0, 3).map(p => (
+                  <Link key={p._id} to={`/produs/${p._id}`} className={styles.heroProductThumb}>
+                    <div className={styles.heroProductImg}>
+                      {p.images?.[0]
+                        ? <img src={p.images[0]} alt={p.name} />
+                        : null}
+                    </div>
+                    <span className={styles.heroProductName}>{p.name}</span>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
           <div className={styles.heroRight}>
             <div className={styles.heroImg} />
@@ -110,10 +126,38 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* TRUST STRIP */}
+      <div className={styles.trustStrip}>
+        <div className={`container ${styles.trustInner}`}>
+          <span className={styles.trustItem}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            100% artizanal
+          </span>
+          <span className={styles.trustDivider} />
+          <span className={styles.trustItem}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            Livrare la adresă
+          </span>
+          <span className={styles.trustDivider} />
+          <span className={styles.trustItem}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Plată cash la livrare
+          </span>
+          <span className={styles.trustDivider} />
+          <span className={styles.trustItem}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Ridicare din magazin
+          </span>
+        </div>
+      </div>
+
       {/* CATEGORIES */}
       <section className={`container ${styles.catsSection}`}>
         <div className={styles.sectionHead}>
-          <h2 className={styles.sectionTitle}>Categorii</h2>
+          <div>
+            <div className={styles.sectionEyebrow}>COLECȚIE</div>
+            <h2 className={styles.sectionTitle}>Categorii</h2>
+          </div>
           <Link to="/catalog" className={styles.sectionLink}>Toate →</Link>
         </div>
         <div className={styles.catsGrid}>
@@ -125,7 +169,7 @@ export default function HomePage() {
                 to={`/catalog?cat=${encodeURIComponent(name)}`}
                 className={styles.catCard}
               >
-                <span className={styles.catIcon}>{ICON_MAP[name] || DEFAULT_CAT_ICON}</span>
+                <div className={styles.catIcon}>{ICON_MAP[name] || DEFAULT_CAT_ICON}</div>
                 <span className={styles.catName}>{name}</span>
               </Link>
             ))

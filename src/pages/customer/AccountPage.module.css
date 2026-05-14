@@ -1,4 +1,4 @@
-.page { padding: 40px 0 80px; }
+.page { padding-top: 40px; padding-bottom: 80px; }
 
 .head {
   display: flex;
@@ -35,6 +35,8 @@
 }
 .logout:hover { border-color: #fca5a5; color: #DC2626; background: #FEF2F2; }
 
+@keyframes slideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+
 /* Edit form */
 .editForm {
   background: var(--bg-2);
@@ -56,13 +58,14 @@
 }
 .editFields input {
   padding: 10px 14px; border: 1.5px solid var(--line);
-  border-radius: 10px; font-size: 14px; color: var(--ink);
-  background: var(--bg-2); outline: none;
+  border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--ink);
+  background: var(--bg); outline: none;
 }
 .editFields input:focus { border-color: var(--ink-3); }
 .saveBtn {
   padding: 11px 24px; background: var(--ink); color: var(--bg); border: none;
   border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: background .2s;
 }
 .saveBtn:hover:not(:disabled) { background: var(--accent); }
 .saveBtn:disabled { opacity: .5; cursor: not-allowed; }

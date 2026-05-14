@@ -20,9 +20,11 @@ export default function ConfirmationPage() {
 
   useEffect(() => { getOrder(id).then(setOrder).catch(() => setError(true)); }, [id]);
   if (error) return (
-    <div className={`container ${styles.page}`} style={{ textAlign: 'center', padding: '4rem 1rem' }}>
-      <p style={{ fontSize: '1.1rem', color: '#6b7280' }}>Comanda nu a putut fi încărcată.</p>
-      <Link to="/cont" style={{ color: 'var(--accent)' }}>← Contul meu</Link>
+    <div className={`container ${styles.page}`}>
+      <div className={styles.errorWrap}>
+        <p className={styles.errorText}>Comanda nu a putut fi încărcată.</p>
+        <Link to="/cont" className={styles.errorLink}>← Contul meu</Link>
+      </div>
     </div>
   );
   if (!order) return <Spinner />;
@@ -45,9 +47,13 @@ export default function ConfirmationPage() {
     <div className={`container ${styles.page}`}>
       <div className={styles.success}>
         {order.status === 'anulata' ? (
-          <div className={styles.checkCancel}>✕</div>
+          <div className={styles.checkCancel}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </div>
         ) : (
-          <div className={styles.check}>✓</div>
+          <div className={styles.check}>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
         )}
         <h1>Comanda {order.orderNumber} {order.status === 'anulata' ? 'a fost anulată' : 'a fost plasată'}</h1>
         {order.status !== 'anulata' && (

@@ -95,6 +95,7 @@ export default function CatalogPage() {
         {/* Header */}
         <div className={styles.header}>
           <div>
+            <div className={styles.eyebrow}>COLECȚIE</div>
             <h1 className={styles.title}>{category === 'Toate' ? 'Catalog' : category}</h1>
             {products !== null && (
               <p className={styles.count}>
@@ -174,15 +175,17 @@ export default function CatalogPage() {
                   placeholder="Caută produse…"
                 />
                 {searchInput && (
-                  <button type="button" className={styles.searchClear} onClick={clearSearch}>×</button>
+                  <button type="button" className={styles.searchClear} onClick={clearSearch}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
                 )}
               </form>
 
               <select className={styles.sort} value={sort} onChange={(e) => setParam('sort', e.target.value)}>
-                <option value="popular">Cele mai populare</option>
-                <option value="newest">Cele mai noi</option>
-                <option value="price-asc">Preț crescător</option>
-                <option value="price-desc">Preț descrescător</option>
+                <option value="popular">Populare</option>
+                <option value="newest">Noi</option>
+                <option value="price-asc">Preț ↑</option>
+                <option value="price-desc">Preț ↓</option>
                 <option value="rating">Rating</option>
               </select>
             </div>
@@ -192,17 +195,26 @@ export default function CatalogPage() {
               <div className={styles.chips}>
                 {search && (
                   <span className={styles.chip}>
-                    „{search}" <button type="button" onClick={clearSearch}>×</button>
+                    „{search}"
+                    <button type="button" onClick={clearSearch}>
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
                   </span>
                 )}
                 {inStock && (
                   <span className={styles.chip}>
-                    Doar în stoc <button type="button" onClick={toggleInStock}>×</button>
+                    Doar în stoc
+                    <button type="button" onClick={toggleInStock}>
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
                   </span>
                 )}
                 {activeTags.map(tag => (
                   <span key={tag} className={styles.chip}>
-                    {tag} <button type="button" onClick={() => toggleTag(tag)}>×</button>
+                    {tag}
+                    <button type="button" onClick={() => toggleTag(tag)}>
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
                   </span>
                 ))}
               </div>
