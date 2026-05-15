@@ -1,3 +1,7 @@
+.outlet {
+  animation: fadeIn .28s ease;
+}
+
 @media (max-width: 860px) {
   .content {
     padding-bottom: calc(64px + env(safe-area-inset-bottom));

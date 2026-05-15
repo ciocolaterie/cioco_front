@@ -1,21 +1,81 @@
-.head { margin-bottom: 32px; display: flex; justify-content: space-between; align-items: flex-start; }
-.head h1 { font-family: var(--serif); font-size: 40px; margin-bottom: 4px; }
-.head p { font-size: 14px; color: var(--ink-3); }
+/* ===== Header ===== */
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  gap: 16px;
+}
+.head h1 { font-family: var(--serif); font-size: 40px; line-height: 1; margin-bottom: 4px; }
+.head p  { font-size: 14px; color: var(--ink-3); }
+
+/* Save button */
 .saveBtn {
-  padding: 12px 24px; background: var(--ink); color: var(--bg); border: none;
-  border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+  flex-shrink: 0;
 }
 .saveBtn:hover:not(:disabled) { background: var(--accent); }
-.saveBtn:disabled { opacity: .5; cursor: not-allowed; }
+.saveBtn:disabled { opacity: .55; cursor: not-allowed; }
 
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.saveSpin { animation: spin .8s linear infinite; }
+
+/* Sticky bar — hidden on desktop */
+.stickyBar { display: none; }
+
+/* Sticky save button (inside bar) */
+.saveBtnSticky {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px;
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+.saveBtnSticky:hover:not(:disabled) { background: var(--accent); }
+.saveBtnSticky:disabled { opacity: .55; cursor: not-allowed; }
+
+/* ===== Grid layout ===== */
 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.card { background: var(--bg-2); border: 1px solid var(--line); border-radius: 16px; padding: 28px; }
+
+.card {
+  background: var(--bg-2);
+  border: 1px solid rgba(28,20,16,.08);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 1px 3px rgba(28,20,16,.04);
+  min-width: 0;
+}
 .card h3 { font-family: var(--serif); font-size: 22px; margin-bottom: 20px; }
 
+/* ===== Store fields ===== */
 .fields { display: flex; flex-direction: column; gap: 16px; }
-.field { display: flex; flex-direction: column; gap: 6px; }
+.field  { display: flex; flex-direction: column; gap: 6px; }
+
 .fieldLabel { font-size: 13px; color: var(--ink-2); font-weight: 500; }
 .fieldInput {
+  width: 100%;
   padding: 10px 14px;
   border: 1.5px solid var(--line);
   border-radius: 10px;
@@ -25,118 +85,267 @@
   background: var(--bg);
   outline: none;
   transition: border-color .15s;
+  box-sizing: border-box;
 }
 .fieldInput:focus { border-color: var(--ink-3); background: var(--bg-2); }
 
-.zoneList { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
-.zone {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 12px; background: var(--bg); border-radius: 10px;
-}
-.zoneRight { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.zoneNameInput {
-  flex: 1; padding: 6px 10px; border: 1.5px solid var(--line);
-  border-radius: 8px; font-size: 14px; color: var(--ink);
-  background: var(--bg-2); outline: none; min-width: 0;
-}
-.zoneNameInput:focus { border-color: var(--ink-3); }
-.zoneDelete {
-  background: none; border: none; cursor: pointer; color: var(--ink-3);
-  display: flex; align-items: center; padding: 4px; border-radius: 6px;
-}
-.zoneDelete:hover { color: #DC2626; background: #fee2e2; }
-.emptyNote { font-size: 13px; color: var(--ink-3); }
-.addZoneRow { display: flex; gap: 8px; }
-.addZoneNameInput {
-  flex: 1; padding: 9px 14px; border: 1.5px solid var(--line);
-  border-radius: 10px; font-size: 14px; color: var(--ink);
-  background: var(--bg); outline: none; min-width: 0;
-}
-.addZoneNameInput:focus { border-color: var(--ink-3); background: var(--bg-2); }
-.addZonePriceInput {
-  width: 80px; padding: 9px 10px; border: 1.5px solid var(--line);
-  border-radius: 10px; font-size: 14px; color: var(--ink);
-  background: var(--bg); outline: none; text-align: right;
-}
-.addZonePriceInput:focus { border-color: var(--ink-3); background: var(--bg-2); }
-
-.notifNote { font-size: 12px; color: var(--ink-3); margin: -8px 0 16px; line-height: 1.5; }
-.notifList { display: flex; flex-direction: column; }
-.notif {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 14px;
-}
-.notif:last-child { border: none; }
-.toggle {
-  width: 48px; height: 26px; border-radius: 999px; border: none;
-  background: var(--bg-3); cursor: pointer; position: relative; transition: background .2s; flex-shrink: 0;
-}
-.toggleOn { background: var(--accent); }
-.toggleThumb {
-  position: absolute; top: 3px; left: 3px; width: 20px; height: 20px;
-  border-radius: 50%; background: var(--bg-2); box-shadow: 0 1px 4px rgba(0,0,0,.2); transition: transform .2s;
-}
-.toggleOn .toggleThumb { transform: translateX(22px); }
-
-.scheduleList { display: flex; flex-direction: column; }
-.scheduleRow {
-  display: flex; justify-content: space-between; align-items: center; padding: 12px 0;
-  border-bottom: 1px solid var(--line); font-size: 14px;
-}
-.scheduleRow:last-child { border: none; }
-.scheduleDay { color: var(--ink); font-weight: 500; }
-.scheduleRight { display: flex; align-items: center; gap: 12px; }
-.scheduleInput {
-  padding: 4px 10px; border: 1.5px solid var(--line); border-radius: 8px;
-  font-size: 14px; color: var(--ink-2); background: var(--bg); outline: none; width: 160px;
-}
-.scheduleInput:focus:not(:disabled) { border-color: var(--ink-3); background: var(--bg-2); }
-.scheduleInput:disabled { opacity: .45; cursor: not-allowed; }
-.scheduleCheck {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 13px; color: var(--ink-3); cursor: pointer; white-space: nowrap;
-}
-.closed { color: var(--ink-3); }
 .latLng { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.zonePrice {
-  width: 72px; padding: 4px 8px; border: 1.5px solid var(--line);
-  border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--ink);
-  background: var(--bg); outline: none; text-align: right;
-}
-.zonePrice:focus { border-color: var(--ink-3); background: var(--bg-2); }
-.zoneCurrency { font-size: 13px; color: var(--ink-3); }
 
-/* Categories */
+/* ===== Categories ===== */
 .tagList { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 .tagItem {
-  display: flex; align-items: center; gap: 6px;
-  padding: 5px 10px 5px 14px; background: var(--bg-2);
-  border: 1px solid var(--line); border-radius: 999px; font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px 5px 13px;
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  font-size: 13px;
 }
 .tagRemove {
-  background: none; border: none; cursor: pointer; color: var(--ink-3);
-  font-size: 16px; line-height: 1; padding: 0; display: flex; align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: 4px;
+  transition: color .12s;
 }
 .tagRemove:hover { color: #DC2626; }
 .addTagRow { display: flex; gap: 8px; }
 .addTagInput {
-  flex: 1; padding: 9px 14px; border: 1.5px solid var(--line);
-  border-radius: 10px; font-size: 14px; color: var(--ink); background: var(--bg); outline: none;
+  flex: 1;
+  padding: 9px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--bg);
+  outline: none;
+  min-width: 0;
+  transition: border-color .15s;
 }
 .addTagInput:focus { border-color: var(--ink-3); background: var(--bg-2); }
 .addTagBtn {
-  padding: 9px 18px; background: var(--ink); color: var(--bg); border: none;
-  border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .2s;
+  padding: 9px 18px;
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+  white-space: nowrap;
 }
 .addTagBtn:hover { background: var(--accent); }
 
-@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
-@media (max-width: 768px) {
-  .head { flex-direction: column; gap: 12px; align-items: flex-start; }
-  .head h1 { font-size: 28px; }
+/* ===== Delivery zones ===== */
+.zoneList { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.zone {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: var(--bg);
+  border: 1px solid rgba(28,20,16,.06);
+  border-radius: 10px;
 }
+.zoneRight     { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.zoneNameInput {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--bg-2);
+  outline: none;
+  min-width: 0;
+  transition: border-color .15s;
+}
+.zoneNameInput:focus { border-color: var(--ink-3); }
+.zonePrice {
+  width: 70px;
+  padding: 5px 8px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--bg-2);
+  outline: none;
+  text-align: right;
+  transition: border-color .15s;
+}
+.zonePrice:focus { border-color: var(--ink-3); }
+.zoneCurrency { font-size: 12px; color: var(--ink-3); }
+.zoneDelete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color .12s, background .12s;
+}
+.zoneDelete:hover { color: #DC2626; background: #FEF2F2; }
+.emptyNote { font-size: 13px; color: var(--ink-3); }
+
+.addZoneRow { display: flex; gap: 8px; }
+.addZoneNameInput {
+  flex: 1;
+  padding: 9px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--bg);
+  outline: none;
+  min-width: 0;
+  transition: border-color .15s;
+}
+.addZoneNameInput:focus { border-color: var(--ink-3); background: var(--bg-2); }
+.addZonePriceInput {
+  width: 76px;
+  padding: 9px 10px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--bg);
+  outline: none;
+  text-align: right;
+  transition: border-color .15s;
+}
+.addZonePriceInput:focus { border-color: var(--ink-3); background: var(--bg-2); }
+
+/* ===== Notifications ===== */
+.notifNote { font-size: 12px; color: var(--ink-3); margin: -8px 0 16px; line-height: 1.55; }
+.notifList { display: flex; flex-direction: column; }
+.notif {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(28,20,16,.06);
+  font-size: 14px;
+  gap: 12px;
+}
+.notif:last-child { border: none; }
+
+/* Toggle switch */
+.toggle {
+  width: 46px;
+  height: 26px;
+  border-radius: 999px;
+  border: none;
+  background: var(--bg-3);
+  cursor: pointer;
+  position: relative;
+  transition: background .2s;
+  flex-shrink: 0;
+}
+.toggleOn { background: var(--accent); }
+.toggleThumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.22);
+  transition: transform .2s;
+}
+.toggleOn .toggleThumb { transform: translateX(20px); }
+
+/* ===== Schedule ===== */
+.scheduleList { display: flex; flex-direction: column; }
+.scheduleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(28,20,16,.06);
+  font-size: 14px;
+  gap: 12px;
+}
+.scheduleRow:last-child { border: none; }
+.scheduleDay  { color: var(--ink); font-weight: 500; min-width: 80px; }
+.scheduleRight { display: flex; align-items: center; gap: 10px; flex: 1; justify-content: flex-end; }
+.scheduleInput {
+  padding: 5px 10px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--ink-2);
+  background: var(--bg);
+  outline: none;
+  width: 150px;
+  transition: border-color .15s;
+}
+.scheduleInput:focus:not(:disabled) { border-color: var(--ink-3); background: var(--bg-2); }
+.scheduleInput:disabled { opacity: .4; cursor: not-allowed; }
+.scheduleCheck {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ink-3);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+.closed { color: var(--ink-3); font-style: italic; }
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .head { margin-bottom: 20px; }
+  .head h1 { font-size: 28px; }
+
+  /* Hide desktop save button, show fixed bar */
+  .saveBtn { display: none; }
+  .stickyBar {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 20px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    background: var(--bg);
+    border-top: 1px solid rgba(28,20,16,.08);
+    box-shadow: 0 -4px 20px rgba(28,20,16,.10);
+    z-index: 50;
+  }
+
+  /* Push ALL page content above the fixed save bar */
+  .page { padding-bottom: 90px; }
+  .grid { padding-bottom: 0; }
+
+  /* Reduce card padding on mobile */
+  .card { padding: 20px; }
+
+  .scheduleInput { width: 110px; font-size: 12px; }
+  .latLng { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 480px) {
-  .scheduleInput { width: 110px; font-size: 13px; }
+  .head h1 { font-size: 24px; }
+
   .addZoneRow { flex-wrap: wrap; }
-  .addZonePriceInput { width: 100%; }
+  .addZonePriceInput { width: 100%; text-align: left; }
+
+  .scheduleRight { flex-wrap: wrap; gap: 6px; }
+  .scheduleInput { width: 100%; }
 }

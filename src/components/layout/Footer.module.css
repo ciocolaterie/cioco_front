@@ -4,17 +4,11 @@
   margin-top: 80px;
 }
 
-.accentBar {
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent) 0%, rgba(123,61,29,.12) 100%);
-  margin-bottom: 15px;
-}
-
 .grid {
   display: grid;
   grid-template-columns: 1.8fr 1fr 1fr 1.3fr;
   gap: 48px;
-  padding: 52px 0 44px;
+  padding: 60px 0 44px;
 }
 
 /* Brand column */

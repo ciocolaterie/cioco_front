@@ -6,19 +6,21 @@ import { clearStoreCache } from '../../hooks/useStoreInfo.js';
 import styles from './SettingsPage.module.css';
 
 const NOTIFS = [
-  { label: 'Email la comenzi noi', key: 'emailOrders' },
-  { label: 'Push notification clienți la schimbare status', key: 'pushStatus' },
-  { label: 'SMS confirmare automată', key: 'smsConfirm' },
-  { label: 'Email weekly recap', key: 'emailRecap' },
+  { label: 'Email la comenzi noi',                        key: 'emailOrders' },
+  { label: 'Push notification la schimbare status',        key: 'pushStatus' },
+  { label: 'SMS confirmare automată',                      key: 'smsConfirm' },
+  { label: 'Email weekly recap',                           key: 'emailRecap' },
 ];
 
 export default function SettingsPage() {
   const toast = useToast();
   const [settings, setSettings] = useState(null);
-  const [saving, setSaving] = useState(false);
+  const [saving, setSaving]     = useState(false);
 
   useEffect(() => {
-    api.get('/settings').then(r => setSettings(r.data)).catch(() => toast({ title: 'Eroare la încărcarea setărilor' }));
+    api.get('/settings').then(r => setSettings(r.data)).catch(() =>
+      toast({ title: 'Eroare la încărcarea setărilor' })
+    );
   }, []);
 
   const save = async () => {
@@ -33,34 +35,59 @@ export default function SettingsPage() {
     } finally { setSaving(false); }
   };
 
-  const set = (k) => (e) => setSettings(s => ({ ...s, [k]: e.target.value }));
-  const setNotif = (k) => setSettings(s => ({ ...s, notifications: { ...s.notifications, [k]: !s.notifications[k] } }));
+  const set    = (k) => (e) => setSettings(s => ({ ...s, [k]: e.target.value }));
+  const setNotif = (k) => setSettings(s => ({
+    ...s, notifications: { ...s.notifications, [k]: !s.notifications[k] }
+  }));
 
   if (!settings) return <Spinner />;
 
+  const SaveButton = ({ className }) => (
+    <button className={className} onClick={save} disabled={saving}>
+      {saving
+        ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={styles.saveSpin}>
+            <circle cx="12" cy="12" r="10" strokeOpacity=".25"/>
+            <path d="M12 2a10 10 0 0 1 10 10" strokeLinecap="round"/>
+          </svg>
+        : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+      }
+      <span className={styles.saveBtnText}>{saving ? 'Se salvează…' : 'Salvează'}</span>
+    </button>
+  );
+
   return (
-    <div>
+    <div className={styles.page}>
       <header className={styles.head}>
         <div>
           <h1>Setări</h1>
-          <p>Configurează magazinul, livrarea, notificările</p>
+          <p>Magazin, livrare, notificări</p>
         </div>
-        <button className={styles.saveBtn} onClick={save} disabled={saving}>
-          {saving ? '…' : 'Salvează modificările'}
-        </button>
+        <SaveButton className={styles.saveBtn} />
       </header>
 
       <div className={styles.grid}>
         <section className={styles.card}>
           <h3>Date magazin</h3>
           <div className={styles.fields}>
-            <Field label="Nume" value={settings.storeName} onChange={set('storeName')} />
-            <Field label="Telefon" value={settings.storePhone} onChange={set('storePhone')} />
-            <Field label="Email" value={settings.storeEmail} onChange={set('storeEmail')} />
-            <Field label="Adresă magazin" value={settings.storeAddress} onChange={set('storeAddress')} />
+            <Field label="Nume magazin"  value={settings.storeName}    onChange={set('storeName')} />
+            <Field label="Telefon"       value={settings.storePhone}   onChange={set('storePhone')} />
+            <Field label="Email"         value={settings.storeEmail}   onChange={set('storeEmail')} />
+            <Field label="Adresă"        value={settings.storeAddress} onChange={set('storeAddress')} />
             <div className={styles.latLng}>
-              <Field label="Latitudine (hartă)" value={settings.storeLat ?? ''} onChange={e => setSettings(s => ({ ...s, storeLat: e.target.value ? Number(e.target.value) : null }))} type="number" step="any" placeholder="ex: 47.6573" />
-              <Field label="Longitudine (hartă)" value={settings.storeLng ?? ''} onChange={e => setSettings(s => ({ ...s, storeLng: e.target.value ? Number(e.target.value) : null }))} type="number" step="any" placeholder="ex: 26.2649" />
+              <Field
+                label="Latitudine"
+                value={settings.storeLat ?? ''}
+                onChange={e => setSettings(s => ({ ...s, storeLat: e.target.value ? Number(e.target.value) : null }))}
+                type="number" step="any" placeholder="ex: 47.6573"
+              />
+              <Field
+                label="Longitudine"
+                value={settings.storeLng ?? ''}
+                onChange={e => setSettings(s => ({ ...s, storeLng: e.target.value ? Number(e.target.value) : null }))}
+                type="number" step="any" placeholder="ex: 26.2649"
+              />
             </div>
           </div>
         </section>
@@ -75,13 +102,18 @@ export default function SettingsPage() {
                   type="button"
                   className={styles.tagRemove}
                   onClick={() => setSettings(s => ({ ...s, categories: s.categories.filter((_, k) => k !== i) }))}
-                >×</button>
+                  aria-label="Șterge categorie"
+                >
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                </button>
               </div>
             ))}
           </div>
           <form
             className={styles.addTagRow}
-            onSubmit={(e) => {
+            onSubmit={e => {
               e.preventDefault();
               const val = e.target.cat.value.trim();
               if (!val || settings.categories.includes(val)) return;
@@ -89,7 +121,7 @@ export default function SettingsPage() {
               e.target.reset();
             }}
           >
-            <input name="cat" className={styles.addTagInput} placeholder="Nume categorie nouă" />
+            <input name="cat" className={styles.addTagInput} placeholder="Categorie nouă…" />
             <button type="submit" className={styles.addTagBtn}>Adaugă</button>
           </form>
         </section>
@@ -98,7 +130,7 @@ export default function SettingsPage() {
           <h3>Zone de livrare</h3>
           <div className={styles.zoneList}>
             {settings.zones.length === 0 && (
-              <p className={styles.emptyNote}>Nicio zonă adăugată. Adaugă mai jos.</p>
+              <p className={styles.emptyNote}>Nicio zonă adăugată.</p>
             )}
             {settings.zones.map((z, i) => (
               <div key={z.id} className={styles.zone}>
@@ -106,7 +138,7 @@ export default function SettingsPage() {
                   className={styles.zoneNameInput}
                   value={z.name}
                   placeholder="Nume zonă"
-                  onChange={(e) => {
+                  onChange={e => {
                     const zones = [...settings.zones];
                     zones[i] = { ...zones[i], name: e.target.value };
                     setSettings(s => ({ ...s, zones }));
@@ -118,7 +150,7 @@ export default function SettingsPage() {
                     className={styles.zonePrice}
                     value={z.price}
                     min="0"
-                    onChange={(e) => {
+                    onChange={e => {
                       const zones = [...settings.zones];
                       zones[i] = { ...zones[i], price: Number(e.target.value) };
                       setSettings(s => ({ ...s, zones }));
@@ -129,8 +161,11 @@ export default function SettingsPage() {
                     type="button"
                     className={styles.zoneDelete}
                     onClick={() => setSettings(s => ({ ...s, zones: s.zones.filter((_, k) => k !== i) }))}
+                    aria-label="Șterge zonă"
                   >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
                   </button>
                 </div>
               </div>
@@ -138,9 +173,9 @@ export default function SettingsPage() {
           </div>
           <form
             className={styles.addZoneRow}
-            onSubmit={(e) => {
+            onSubmit={e => {
               e.preventDefault();
-              const name = e.target.zoneName.value.trim();
+              const name  = e.target.zoneName.value.trim();
               const price = Number(e.target.zonePrice.value) || 0;
               if (!name) return;
               const id = Date.now().toString(36);
@@ -148,23 +183,26 @@ export default function SettingsPage() {
               e.target.reset();
             }}
           >
-            <input name="zoneName" className={styles.addZoneNameInput} placeholder="Nume (ex: Suceava)" required />
-            <input name="zonePrice" type="number" min="0" className={styles.addZonePriceInput} placeholder="RON" defaultValue="0" />
+            <input name="zoneName"  className={styles.addZoneNameInput}  placeholder="ex: Suceava" required />
+            <input name="zonePrice" className={styles.addZonePriceInput} type="number" min="0" placeholder="RON" defaultValue="0" />
             <button type="submit" className={styles.addTagBtn}>Adaugă</button>
           </form>
         </section>
 
         <section className={styles.card}>
           <h3>Notificări</h3>
-          <p className={styles.notifNote}>Aceste setări sunt salvate, dar necesită configurarea unui serviciu extern (SMTP, SMS, push) pentru a funcționa efectiv.</p>
+          <p className={styles.notifNote}>
+            Setări salvate — necesită configurarea unui serviciu extern (SMTP, SMS, push) pentru a funcționa.
+          </p>
           <div className={styles.notifList}>
-            {NOTIFS.map((n) => (
+            {NOTIFS.map(n => (
               <div key={n.key} className={styles.notif}>
                 <span>{n.label}</span>
                 <button
                   className={`${styles.toggle} ${settings.notifications[n.key] ? styles.toggleOn : ''}`}
                   onClick={() => setNotif(n.key)}
                   type="button"
+                  aria-label={n.label}
                 >
                   <span className={styles.toggleThumb} />
                 </button>
@@ -184,15 +222,18 @@ export default function SettingsPage() {
                     className={`${styles.scheduleInput} ${s.closed ? styles.closed : ''}`}
                     value={s.hours}
                     disabled={s.closed}
-                    onChange={(e) => {
+                    placeholder="ex: 09:00 – 18:00"
+                    onChange={e => {
                       const schedule = [...settings.schedule];
                       schedule[i] = { ...schedule[i], hours: e.target.value };
                       setSettings(st => ({ ...st, schedule }));
                     }}
                   />
                   <label className={styles.scheduleCheck}>
-                    <input type="checkbox" checked={!!s.closed}
-                      onChange={(e) => {
+                    <input
+                      type="checkbox"
+                      checked={!!s.closed}
+                      onChange={e => {
                         const schedule = [...settings.schedule];
                         schedule[i] = { ...schedule[i], closed: e.target.checked, hours: e.target.checked ? 'Închis' : '' };
                         setSettings(st => ({ ...st, schedule }));
@@ -206,6 +247,11 @@ export default function SettingsPage() {
           </div>
         </section>
       </div>
+
+      {/* Sticky save bar — mobile only */}
+      <div className={styles.stickyBar}>
+        <SaveButton className={styles.saveBtnSticky} />
+      </div>
     </div>
   );
 }
@@ -214,7 +260,14 @@ function Field({ label, value, onChange, type = 'text', step, placeholder }) {
   return (
     <div className={styles.field}>
       <label className={styles.fieldLabel}>{label}</label>
-      <input className={styles.fieldInput} value={value} onChange={onChange} type={type} step={step} placeholder={placeholder} />
+      <input
+        className={styles.fieldInput}
+        value={value}
+        onChange={onChange}
+        type={type}
+        step={step}
+        placeholder={placeholder}
+      />
     </div>
   );
 }

@@ -10,7 +10,7 @@ export default function CustomerLayout() {
     <>
       <Header />
       <div className={styles.content}>
-        <main key={pathname} style={{ animation: 'fadeIn .22s ease' }}>
+        <main key={pathname} className={styles.outlet}>
           <Outlet />
         </main>
         <Footer />

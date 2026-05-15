@@ -23,8 +23,6 @@ export default function Footer() {
 
   return (
     <footer className={styles.footer}>
-      <div className={styles.accentBar} />
-
       <div className={`container ${styles.grid}`}>
         <div className={styles.about}>
           <div className={styles.logoGroup}>

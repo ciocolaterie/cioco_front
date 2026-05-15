@@ -54,7 +54,7 @@
 .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .fields label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--ink-2); }
 .full { grid-column: 1 / -1; }
-.fields input, .fields textarea { padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; font-size: 14px; font-family: inherit; background: var(--bg); color: var(--ink); }
+.fields input, .fields textarea { padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; font-family: inherit; background: var(--bg); color: var(--ink); }
 .fields input:focus, .fields textarea:focus { outline: none; border-color: var(--accent); }
 .payment {
   display: flex;
@@ -92,13 +92,13 @@
 .promoRow { display: flex; gap: 8px; margin-top: 12px; }
 .promoInput {
   flex: 1; padding: 10px 14px; border: 1.5px solid var(--line);
-  border-radius: 10px; font-size: 14px; font-family: inherit; outline: none; background: var(--bg-2);
+  border-radius: 8px; font-size: 14px; font-family: inherit; outline: none; background: var(--bg-2);
   text-transform: uppercase; letter-spacing: .05em; color: var(--ink);
 }
 .promoInput:focus { border-color: var(--ink-3); }
 .promoBtn {
   padding: 10px 16px; border: 1.5px solid var(--line); background: var(--bg-2);
-  border-radius: 10px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--ink);
+  border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--ink);
   white-space: nowrap; transition: border-color .15s;
 }
 .promoBtn:hover { border-color: var(--ink-3); }

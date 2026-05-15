@@ -58,7 +58,7 @@
 }
 .editFields input {
   padding: 10px 14px; border: 1.5px solid var(--line);
-  border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--ink);
+  border-radius: 8px; font-size: 14px; font-family: inherit; color: var(--ink);
   background: var(--bg); outline: none;
 }
 .editFields input:focus { border-color: var(--ink-3); }

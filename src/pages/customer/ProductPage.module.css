@@ -34,7 +34,7 @@
 .noRating { font-size: 13px; color: var(--ink-3); }
 
 .short { color: var(--ink-2); margin-bottom: 24px; line-height: 1.65; }
-.price { font-family: var(--serif); font-size: 36px; margin-bottom: 24px; color: var(--accent); }
+.price { font-family: var(--serif); font-style: italic; font-size: 36px; margin-bottom: 24px; color: var(--accent); }
 .priceCur { font-size: 16px; font-weight: 400; color: var(--ink-3); font-family: var(--sans); vertical-align: middle; }
 .actions { display: flex; gap: 12px; align-items: center; padding: 20px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .qty { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; }
@@ -199,7 +199,7 @@
 .reviewInput, .reviewTextarea {
   padding: 10px 14px;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--bg);
   font-size: 14px;
   font-family: inherit;
@@ -280,6 +280,7 @@
 .stickyPrice {
   display: block;
   font-family: var(--serif);
+  font-style: italic;
   font-size: 20px;
   color: var(--accent);
   font-weight: 600;

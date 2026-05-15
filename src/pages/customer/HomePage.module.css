@@ -90,7 +90,7 @@
   border-top: 1px solid var(--line);
 }
 .stat { display: flex; flex-direction: column; gap: 4px; }
-.statNum { font-family: var(--serif); font-size: 30px; color: var(--accent); }
+.statNum { font-family: var(--serif); font-style: italic; font-size: 30px; color: var(--accent); }
 .statLabel { font-size: 10px; font-weight: 600; letter-spacing: .15em; color: var(--ink-3); }
 .statDiv { width: 1px; height: 32px; background: var(--line); }
 .statSkeleton {
@@ -482,13 +482,13 @@
 }
 @media (max-width: 768px) {
   .grid { grid-template-columns: repeat(2, 1fr); }
-  .hero { padding: 48px 0 60px; }
+  .hero { padding: 56px 0 72px; }
   .heroProducts { display: flex; }
   .leadAddr { display: none; }
-  .catsSection { margin-top: 56px; }
-  .bestsection { margin-top: 56px; }
-  .testimonialsSection { margin-top: 64px; padding: 56px 0; }
-  .process { margin-top: 64px; padding: 56px 0; }
+  .catsSection { margin-top: 72px; }
+  .bestsection { margin-top: 72px; }
+  .testimonialsSection { margin-top: 80px; padding: 64px 0; }
+  .process { margin-top: 80px; padding: 64px 0; }
 
   /* Categories → horizontal scroll */
   .catsGrid {
@@ -519,7 +519,7 @@
   .grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
-  .hero { padding: 32px 0 44px; }
+  .hero { padding: 44px 0 60px; }
   .ctas { gap: 8px; }
   .btnPrimary, .btnGhost { flex: 1; justify-content: center; padding: 13px 14px; font-size: 13px; }
   .stats { justify-content: center; gap: 14px; padding-top: 18px; }
@@ -528,10 +528,10 @@
   .statDiv { height: 22px; }
   .sectionTitle { font-size: 28px; }
   .processTitle { font-size: 34px; }
-  .catsSection { margin-top: 40px; }
-  .bestsection { margin-top: 40px; }
-  .testimonialsSection { margin-top: 48px; padding: 44px 0; }
-  .process { margin-top: 48px; padding: 44px 0; }
-  .processCta { margin-top: 32px; }
+  .catsSection { margin-top: 56px; }
+  .bestsection { margin-top: 56px; }
+  .testimonialsSection { margin-top: 64px; padding: 56px 0; }
+  .process { margin-top: 64px; padding: 56px 0; }
+  .processCta { margin-top: 36px; }
   .processCtaBtn { padding: 14px 28px; font-size: 14px; }
 }
