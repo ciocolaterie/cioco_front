@@ -6,15 +6,27 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:e2e": "playwright test",
+    "test:e2e:real": "playwright test --config playwright.real.config.js",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:real:ui": "playwright test --config playwright.real.config.js --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
     "axios": "^1.7.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.27.0"
+    "react-router-dom": "^6.27.0",
+    "recharts": "^3.8.1",
+    "three": "^0.168.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^25.9.1",
     "@vitejs/plugin-react": "^4.3.3",
     "vite": "^5.4.10"
   }

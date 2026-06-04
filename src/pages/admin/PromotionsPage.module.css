@@ -6,8 +6,9 @@
   margin-bottom: 24px;
   gap: 16px;
 }
-.head h1 { font-family: var(--serif); font-size: 40px; line-height: 1; margin-bottom: 4px; }
-.head p  { font-size: 14px; color: var(--ink-3); }
+.page { padding-bottom: 60px; }
+.head h1 { font-family: var(--serif); font-size: 36px; line-height: 1; margin-bottom: 4px; }
+.head p  { font-size: 13px; color: var(--ink-3); }
 
 .addBtn {
   display: flex;
@@ -35,7 +36,7 @@
 }
 .kpi {
   background: var(--bg-2);
-  border: 1px solid rgba(28,20,16,.08);
+  border: 1px solid var(--line);
   border-radius: 16px;
   padding: 22px 24px;
   box-shadow: 0 1px 3px rgba(28,20,16,.04);
@@ -47,7 +48,7 @@
 /* ===== Desktop table ===== */
 .tableWrap {
   background: var(--bg-2);
-  border: 1px solid rgba(28,20,16,.08);
+  border: 1px solid var(--line);
   border-radius: 16px;
   overflow: hidden;
 }
@@ -64,7 +65,7 @@
   letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--ink-3);
-  border-bottom: 1px solid rgba(28,20,16,.07);
+  border-bottom: 1px solid var(--line);
   background: var(--bg);
 }
 .row {
@@ -120,7 +121,7 @@
 }
 .badgeOn      { background: #D1FAE5; color: #065F46; }
 .badgeOff     { background: #F3F4F6; color: #6B7280; }
-.badgeExpired { background: #FEE2E2; color: #991B1B; }
+.badgeExpired { background: var(--error-bg); color: #991B1B; }
 
 .discount { font-weight: 600; font-size: 14px; }
 .uses     { font-size: 13px; color: var(--ink-2); font-family: var(--mono); }
@@ -145,7 +146,7 @@
 .iconBtn:disabled     { opacity: .35; cursor: not-allowed; }
 .iconBtnOn            { border-color: #6EE7B7; color: #065F46; background: #ECFDF5; }
 .iconBtnOn:hover      { border-color: #34D399; color: #065F46; background: #D1FAE5; }
-.iconBtnDanger:hover  { border-color: #fca5a5; color: #DC2626; background: #FEF2F2; }
+.iconBtnDanger:hover  { border-color: var(--error-border); color: var(--error); background: var(--error-bg); }
 
 /* Empty state */
 .empty {
@@ -176,7 +177,7 @@
 
 .mobileCard {
   padding: 16px 0;
-  border-bottom: 1px solid rgba(28,20,16,.07);
+  border-bottom: 1px solid var(--line);
 }
 .mobileCard:last-child { border: none; }
 .mobileCardDim { opacity: .55; }
@@ -357,7 +358,7 @@
     display: flex;
     flex-direction: column;
     background: var(--bg-2);
-    border: 1px solid rgba(28,20,16,.08);
+    border: 1px solid var(--line);
     border-radius: 16px;
     padding: 0 16px;
   }

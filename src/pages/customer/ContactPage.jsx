@@ -32,6 +32,7 @@ export default function ContactPage() {
     <div className={styles.page}>
       <div className="container">
         <div className={styles.intro}>
+          <div className={styles.eyebrow}>CONTACT</div>
           <h1 className={styles.title}>Hai să vorbim</h1>
           <p className={styles.lead}>
             Întrebări, comenzi corporate, parteneriate sau pur și simplu vrei să spui un „bună".
@@ -171,7 +172,7 @@ export default function ContactPage() {
                     required
                   />
                 </div>
-                {error && <p style={{ color: '#DC2626', fontSize: 13, margin: 0 }}>{error}</p>}
+                {error && <p className={styles.formError}>{error}</p>}
                 <button type="submit" className={styles.btn} disabled={sending}>
                   {sending ? 'Se trimite…' : 'Trimite mesajul'}
                 </button>

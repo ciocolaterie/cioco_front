@@ -5,9 +5,51 @@ import { useAuth } from '../../context/AuthContext.jsx';
 import { useToast } from '../../context/ToastContext.jsx';
 import Spinner from '../../components/ui/Spinner.jsx';
 import Badge from '../../components/ui/Badge.jsx';
+import ConfirmDialog from '../../components/ui/ConfirmDialog.jsx';
 import usePageTitle from '../../hooks/usePageTitle.js';
 import { STATUS_LABEL, fmtDateTime, fmt } from '../../utils/format.js';
 import styles from './ConfirmationPage.module.css';
+
+const STATUS_ORDER = ['noua', 'in_pregatire', 'gata', 'livrata'];
+
+function OrderTimeline({ status, method }) {
+  const steps = [
+    { key: 'noua',         label: 'Plasată' },
+    { key: 'in_pregatire', label: 'În pregătire' },
+    { key: 'gata',         label: 'Gata' },
+    { key: 'livrata',      label: method === 'livrare' ? 'Livrată' : 'Ridicată' },
+  ];
+  const currentIdx = STATUS_ORDER.indexOf(status);
+
+  return (
+    <div className={styles.timeline}>
+      {steps.map((step, i) => {
+        const done    = currentIdx > i;
+        const current = currentIdx === i;
+        return (
+          <div key={step.key} className={styles.timelineStep}>
+            <div className={styles.stepTop}>
+              {i > 0 && (
+                <div className={`${styles.stepLine} ${done || current ? styles.stepLineDone : ''}`} />
+              )}
+              <div className={`${styles.stepCircle} ${done ? styles.stepDone : ''} ${current ? styles.stepCurrent : ''}`}>
+                {done
+                  ? <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  : <span>{i + 1}</span>}
+              </div>
+              {i < steps.length - 1 && (
+                <div className={`${styles.stepLine} ${done ? styles.stepLineDone : ''}`} />
+              )}
+            </div>
+            <div className={`${styles.stepLabel} ${(done || current) ? styles.stepLabelActive : ''}`}>
+              {step.label}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function ConfirmationPage() {
   const { id } = useParams();
@@ -15,6 +57,7 @@ export default function ConfirmationPage() {
   const toast = useToast();
   const [order, setOrder] = useState(null);
   const [cancelling, setCancelling] = useState(false);
+  const [cancelDialog, setCancelDialog] = useState(false);
   const [error, setError] = useState(false);
   usePageTitle(order ? `Comanda ${order.orderNumber}` : 'Comandă');
 
@@ -32,7 +75,6 @@ export default function ConfirmationPage() {
   const canCancel = order.status === 'noua' && user && (String(order.user) === user._id || user.role === 'admin');
 
   const doCancel = async () => {
-    if (!window.confirm('Ești sigur că vrei să anulezi comanda?')) return;
     setCancelling(true);
     try {
       const updated = await cancelOrder(id);
@@ -60,6 +102,10 @@ export default function ConfirmationPage() {
           <p>Ți-am trimis un email de confirmare la <strong>{order.customer.email}</strong>. Vei primi notificare automată când comanda îți este pregătită.</p>
         )}
       </div>
+
+      {order.status !== 'anulata' && (
+        <OrderTimeline status={order.status} method={order.method} />
+      )}
 
       <div className={styles.grid}>
         <section className={styles.card}>
@@ -92,11 +138,20 @@ export default function ConfirmationPage() {
         <Link to="/" className={styles.btnGhost}>Înapoi la magazin</Link>
         {user && <Link to="/cont" className={styles.btnPrimary}>Vezi istoric comenzi</Link>}
         {canCancel && (
-          <button className={styles.btnCancel} onClick={doCancel} disabled={cancelling}>
+          <button className={styles.btnCancel} onClick={() => setCancelDialog(true)} disabled={cancelling}>
             {cancelling ? 'Se anulează…' : 'Anulează comanda'}
           </button>
         )}
       </div>
+      <ConfirmDialog
+        open={cancelDialog}
+        title="Anulezi comanda?"
+        body="Comanda va fi marcată ca anulată. Această acțiune nu poate fi inversată."
+        confirmLabel="Da, anulează"
+        danger
+        onConfirm={() => { setCancelDialog(false); doCancel(); }}
+        onCancel={() => setCancelDialog(false)}
+      />
     </div>
   );
 }

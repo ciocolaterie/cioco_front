@@ -8,8 +8,11 @@ const DEFAULTS = {
   storeAddress: '',
   storeLat: null,
   storeLng: null,
+  storeInstagram: '',
+  storeFacebook: '',
   schedule: [],
   zones: [],
+  banner: { active: false, text: '', color: 'accent' },
 };
 
 let _cache = null;

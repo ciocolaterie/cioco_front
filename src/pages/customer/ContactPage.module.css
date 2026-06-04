@@ -1,5 +1,12 @@
 .page { padding: 60px 0 100px; }
 .intro { margin-bottom: 56px; }
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
 .title { font-family: var(--serif); font-size: clamp(36px, 4vw, 56px); margin-bottom: 12px; }
 .lead { font-size: 15px; color: var(--ink-2); max-width: 480px; line-height: 1.7; }
 
@@ -21,11 +28,12 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--bg-2);
+  background: rgba(123,61,29,.08);
+  border: 1px solid rgba(123,61,29,.12);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--ink-2);
+  color: var(--accent);
   flex-shrink: 0;
 }
 .contactTag {
@@ -47,14 +55,16 @@ a.contactValue:hover { color: var(--accent); }
 
 .mapWrap {
   position: relative;
-  border-radius: 16px;
+  border-radius: var(--radius);
   overflow: hidden;
+  border: 1px solid var(--line);
 }
 .map {
   width: 100%;
   aspect-ratio: 4/3;
   border: none;
   display: block;
+  filter: saturate(0.55) sepia(0.18) brightness(0.96);
 }
 .mapCaption {
   position: absolute;
@@ -87,7 +97,8 @@ a.contactValue:hover { color: var(--accent); }
 
 .formCard {
   background: var(--bg-2);
-  border-radius: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
   padding: 40px;
 }
 .formTitle { font-family: var(--serif); font-size: 28px; margin-bottom: 28px; }
@@ -97,7 +108,7 @@ a.contactValue:hover { color: var(--accent); }
 .input, .textarea {
   padding: 12px 16px;
   border: 1.5px solid var(--line);
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--bg-2);
   font-size: 14px;
   color: var(--ink);
@@ -105,7 +116,7 @@ a.contactValue:hover { color: var(--accent); }
   transition: border-color .15s;
   resize: none;
 }
-.input:focus, .textarea:focus { border-color: var(--ink-3); }
+.input:focus, .textarea:focus { border-color: var(--accent); }
 .btn {
   padding: 16px;
   background: var(--ink);
@@ -118,6 +129,7 @@ a.contactValue:hover { color: var(--accent); }
   transition: background .15s;
 }
 .btn:hover { background: var(--accent); }
+.formError { color: var(--error); font-size: 13px; margin: 0; }
 
 @keyframes popIn {
   0%   { opacity: 0; transform: scale(.4); }
@@ -133,8 +145,8 @@ a.contactValue:hover { color: var(--accent); }
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: #D1FAE5;
-  color: #065F46;
+  background: var(--success-bg);
+  color: var(--success);
   font-size: 24px;
   display: flex;
   align-items: center;

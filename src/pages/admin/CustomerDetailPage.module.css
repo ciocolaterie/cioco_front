@@ -1,0 +1,198 @@
+.page { padding-bottom: 60px; }
+
+/* ── Breadcrumb ── */
+.breadcrumb {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 20px; font-size: 13px;
+}
+.backLink {
+  display: inline-flex; align-items: center; gap: 5px;
+  color: var(--ink-3); text-decoration: none; font-weight: 500;
+  padding: 4px 8px; border-radius: 7px; margin-left: -8px;
+  transition: background .12s, color .12s;
+}
+.backLink:hover { background: var(--bg-3); color: var(--ink); }
+.sep     { color: var(--ink-3); }
+.current { color: var(--ink); font-weight: 500; }
+
+/* ── Hero card ── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  align-items: start;
+}
+
+.heroLeft { display: flex; align-items: flex-start; gap: 16px; }
+
+.heroAvatar {
+  width: 56px; height: 56px; border-radius: 14px; flex-shrink: 0;
+  color: #fff; font-size: 18px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; letter-spacing: .02em;
+}
+
+.heroMeta { min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+
+.heroNameRow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.heroName { font-family: var(--serif); font-size: 26px; line-height: 1; font-weight: 400; }
+
+.heroBadge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap;
+}
+.heroBadgeFidel { background: var(--warning-bg); color: var(--warning); }
+.heroBadgeActiv { background: #DCFCE7; color: #15803D; }
+.heroBadgeNone  { background: var(--bg-3); color: var(--ink-3); }
+.dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+.heroContacts { display: flex; flex-wrap: wrap; gap: 12px 18px; }
+.contact {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 13px; color: var(--ink-3); text-decoration: none;
+  transition: color .12s;
+}
+a.contact:hover { color: var(--accent); }
+
+.heroNote {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 12px; background: var(--bg-3); border: none;
+  border-radius: 8px; font-size: 12.5px; color: var(--ink-3);
+  cursor: pointer; text-align: left; font-family: inherit;
+  transition: background .12s, color .12s; max-width: 400px;
+}
+.heroNote:hover { background: var(--bg); color: var(--ink-2); }
+.heroNote span  { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── Hero right: stats ── */
+.heroRight {
+  display: flex; flex-direction: column; gap: 16px; align-items: flex-end; min-width: 190px;
+}
+.statBlock { text-align: right; }
+.statLabel { font-size: 11.5px; color: var(--ink-3); display: block; margin-bottom: 4px; }
+.statBig   { font-family: var(--serif); font-size: 36px; line-height: 1; color: var(--ink); }
+.statCur   { font-size: 16px; color: var(--ink-3); font-family: var(--sans); }
+
+.statRow { display: flex; gap: 20px; }
+.stat    { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.statN   { font-size: 17px; font-weight: 700; color: var(--ink); }
+.statS   { font-size: 11px; color: var(--ink-3); text-align: right; }
+
+.newOrderBtn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 18px; background: var(--ink); color: var(--bg);
+  border: none; border-radius: 10px; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: background .15s; white-space: nowrap;
+}
+.newOrderBtn:hover { background: var(--accent); }
+
+/* ── Tabs ── */
+.tabs {
+  display: flex; gap: 2px; margin-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.tabBtn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 16px; border: none; background: none;
+  font-size: 13.5px; font-weight: 500; color: var(--ink-3);
+  cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: color .15s, border-color .15s; white-space: nowrap;
+}
+.tabBtn:hover { color: var(--ink); }
+.tabActive { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
+.tabCount {
+  font-size: 11px; font-weight: 700;
+  background: var(--bg-3); padding: 2px 6px; border-radius: 999px; color: var(--ink-3);
+}
+.tabActive .tabCount { background: rgba(123,61,29,.12); color: var(--accent); }
+
+/* ── Empty ── */
+.empty { padding: 60px 0; text-align: center; font-size: 13px; color: var(--ink-3); }
+
+/* ── Orders tab ── */
+.ordersCard {
+  background: var(--bg-2); border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+}
+.ordHead, .ordRow {
+  display: grid;
+  grid-template-columns: 120px minmax(0,1fr) 130px 120px 130px 30px;
+  gap: 14px; align-items: center; padding: 0 20px;
+}
+.ordHead {
+  height: 40px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-3); border-bottom: 1px solid var(--line); background: var(--bg);
+}
+.ordRow {
+  min-height: 52px; border-top: 1px solid var(--line);
+  text-decoration: none; color: var(--ink); transition: background .12s;
+}
+.ordRow:hover { background: var(--bg-3); }
+.ordNum   { font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); }
+.ordItems { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ordDate  { font-size: 12.5px; color: var(--ink-3); }
+.ordTotal { font-size: 13.5px; font-weight: 700; }
+.ordArrow { color: var(--ink-3); display: flex; }
+
+/* ── Timeline ── */
+.timeline { display: flex; flex-direction: column; padding-top: 4px; }
+.tlItem   { display: flex; gap: 16px; }
+.tlLeft   { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 36px; }
+.tlIcon {
+  width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1;
+}
+.tlLine { flex: 1; width: 1.5px; background: var(--line); margin: 4px 0; min-height: 20px; }
+.tlBody { flex: 1; min-width: 0; padding-bottom: 28px; display: flex; flex-direction: column; gap: 4px; }
+.tlDate  { font-size: 11.5px; color: var(--ink-3); margin-top: 8px; }
+.tlTitle {
+  font-size: 14px; font-weight: 600; color: var(--ink); text-decoration: none; transition: color .12s;
+}
+.tlTitle:hover { color: var(--accent); }
+.tlDesc  { font-size: 12px; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tlMeta  { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tlTotal { font-size: 13px; font-weight: 700; }
+.tlMethod{ font-size: 11.5px; color: var(--ink-3); }
+
+/* ── Note tab ── */
+.noteTab { background: var(--bg-2); border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
+.noteHint { font-size: 13px; color: var(--ink-3); margin-bottom: 14px; }
+.noteTextarea {
+  width: 100%; padding: 14px; border: 1.5px solid var(--line); border-radius: 12px;
+  font-size: 14px; font-family: inherit; resize: vertical; outline: none;
+  background: var(--bg); color: var(--ink); line-height: 1.6;
+  transition: border-color .15s; box-sizing: border-box;
+}
+.noteTextarea:focus { border-color: var(--accent); }
+.noteTextarea::placeholder { color: var(--ink-3); }
+.noteFooter { display: flex; justify-content: flex-end; margin-top: 10px; }
+.noteSave {
+  padding: 9px 20px; background: var(--ink); color: var(--bg);
+  border: none; border-radius: 10px; font-size: 13.5px; font-weight: 600; cursor: pointer;
+  transition: background .15s;
+}
+.noteSave:hover   { background: var(--accent); }
+.noteSave:disabled{ opacity: .6; cursor: default; }
+.noteSaved { background: #15803d !important; }
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; gap: 20px; padding: 20px; }
+  .heroRight { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
+  .statBlock { text-align: left; }
+  .stat { align-items: flex-start; }
+  .newOrderBtn { width: 100%; justify-content: center; }
+  .ordersCard { overflow-x: auto; }
+  .ordHead, .ordRow { min-width: 600px; }
+  .tabs { overflow-x: auto; padding-bottom: 0; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabBtn { padding: 10px 12px; font-size: 13px; }
+}
+@media (max-width: 600px) {
+  .heroName { font-size: 22px; }
+  .statBig  { font-size: 28px; }
+  .heroAvatar { width: 44px; height: 44px; font-size: 14px; border-radius: 11px; }
+}

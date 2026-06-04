@@ -26,11 +26,16 @@ const NotFoundPage = lazy(() => import('../pages/NotFoundPage.jsx'));
 const DashboardPage = lazy(() => import('../pages/admin/DashboardPage.jsx'));
 const OrdersPage = lazy(() => import('../pages/admin/OrdersPage.jsx'));
 const OrderDetailPage = lazy(() => import('../pages/admin/OrderDetailPage.jsx'));
+const ManualOrderPage = lazy(() => import('../pages/admin/ManualOrderPage.jsx'));
 const ProductsPage = lazy(() => import('../pages/admin/ProductsPage.jsx'));
-const CustomersPage = lazy(() => import('../pages/admin/CustomersPage.jsx'));
+const CustomersPage       = lazy(() => import('../pages/admin/CustomersPage.jsx'));
+const CustomerDetailPage  = lazy(() => import('../pages/admin/CustomerDetailPage.jsx'));
 const SettingsPage = lazy(() => import('../pages/admin/SettingsPage.jsx'));
 const PromotionsPage = lazy(() => import('../pages/admin/PromotionsPage.jsx'));
 const ReviewsPage = lazy(() => import('../pages/admin/ReviewsPage.jsx'));
+const CalendarPage = lazy(() => import('../pages/admin/CalendarPage.jsx'));
+const CategoriesPage  = lazy(() => import('../pages/admin/CategoriesPage.jsx'));
+const AnalyticsPage   = lazy(() => import('../pages/admin/AnalyticsPage.jsx'));
 
 function PageSpinner() {
   return <div style={{ minHeight: '40vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Spinner /></div>;
@@ -72,12 +77,17 @@ export default function AppRouter() {
         }>
           <Route index element={<DashboardPage />} />
           <Route path="comenzi" element={<OrdersPage />} />
+          <Route path="comenzi/nou" element={<ManualOrderPage />} />
           <Route path="comenzi/:id" element={<OrderDetailPage />} />
           <Route path="produse" element={<ProductsPage />} />
           <Route path="clienti" element={<CustomersPage />} />
+          <Route path="clienti/:id" element={<CustomerDetailPage />} />
           <Route path="promotii" element={<PromotionsPage />} />
           <Route path="recenzii" element={<ReviewsPage />} />
           <Route path="setari" element={<SettingsPage />} />
+          <Route path="calendar" element={<CalendarPage />} />
+          <Route path="categorii"  element={<CategoriesPage />} />
+          <Route path="analytics"  element={<AnalyticsPage />} />
         </Route>
       </Routes>
     </Suspense>

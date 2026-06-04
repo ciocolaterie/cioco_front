@@ -5,6 +5,7 @@ import { useToast } from '../../context/ToastContext.jsx';
 import Spinner from '../../components/ui/Spinner.jsx';
 import Button from '../../components/ui/Button.jsx';
 import Badge from '../../components/ui/Badge.jsx';
+import ConfirmDialog from '../../components/ui/ConfirmDialog.jsx';
 import { fmt } from '../../utils/format.js';
 import styles from './ProductsPage.module.css';
 
@@ -17,16 +18,16 @@ export default function ProductsPage() {
   const [filter, setFilter]   = useState('all');
   const [search, setSearch]   = useState('');
   const [visible, setVisible] = useState(PAGE);
+  const [deleteTarget, setDeleteTarget] = useState(null);
   const toast = useToast();
 
   const load = () => api.get('/admin/products').then(r => setItems(r.data));
   useEffect(() => {
     load();
-    api.get('/settings/categories').then(r => setCats(r.data)).catch(() => {});
+    api.get('/settings/categories').then(r => setCats(r.data.map(c => c.name || c))).catch(() => {});
   }, []);
 
   const onDelete = async (p) => {
-    if (!confirm(`Ștergi ${p.name}?`)) return;
     try {
       await productsApi.deleteProduct(p._id);
       toast({ title: 'Produs șters' });
@@ -49,7 +50,7 @@ export default function ProductsPage() {
     : (items || []).filter(p => p.category === v).length;
 
   return (
-    <div>
+    <div className={styles.page}>
       <header className={styles.head}>
         <div>
           <h1>Produse</h1>
@@ -127,7 +128,7 @@ export default function ProductsPage() {
                     <div key={p._id} className={styles.row}>
                       <div className={styles.thumb}>
                         {p.images?.[0]
-                          ? <img src={p.images[0]} alt="" />
+                          ? <img src={p.images[0]} alt={p.name} />
                           : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.35)" strokeWidth="1.5">
                               <rect x="3" y="3" width="18" height="18" rx="2"/>
                               <circle cx="8.5" cy="8.5" r="1.5"/>
@@ -157,7 +158,7 @@ export default function ProductsPage() {
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                           </svg>
                         </button>
-                        <button onClick={() => onDelete(p)} className={`${styles.iconBtn} ${styles.iconBtnDanger}`} title="Șterge">
+                        <button onClick={() => setDeleteTarget(p)} className={`${styles.iconBtn} ${styles.iconBtnDanger}`} title="Șterge">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <polyline points="3 6 5 6 21 6"/>
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
@@ -174,7 +175,7 @@ export default function ProductsPage() {
                 {shown.map(p => (
                   <div key={p._id} className={styles.mobileCard}>
                     <div className={styles.mobileThumb}>
-                      {p.images?.[0] && <img src={p.images[0]} alt="" />}
+                      {p.images?.[0] && <img src={p.images[0]} alt={p.name} />}
                     </div>
                     <div className={styles.mobileBody}>
                       <div className={styles.mobileTop}>
@@ -199,7 +200,7 @@ export default function ProductsPage() {
                               <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                             </svg>
                           </button>
-                          <button onClick={() => onDelete(p)} className={`${styles.iconBtn} ${styles.iconBtnDanger}`} title="Șterge">
+                          <button onClick={() => setDeleteTarget(p)} className={`${styles.iconBtn} ${styles.iconBtnDanger}`} title="Șterge">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                               <polyline points="3 6 5 6 21 6"/>
                               <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
@@ -229,10 +230,20 @@ export default function ProductsPage() {
         <ProductForm
           initial={editing}
           cats={cats}
+          allProducts={items || []}
           onClose={() => setEditing(null)}
           onSaved={() => { setEditing(null); load(); }}
         />
       )}
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title={`Ștergi "${deleteTarget?.name}"?`}
+        body="Produsul va fi eliminat definitiv din catalog."
+        confirmLabel="Șterge"
+        danger
+        onConfirm={() => { const p = deleteTarget; setDeleteTarget(null); onDelete(p); }}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }
@@ -300,15 +311,17 @@ const slugify = (str) =>
     .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 /* ── Product form modal ── */
-function ProductForm({ initial, cats, onClose, onSaved }) {
+function ProductForm({ initial, cats, allProducts, onClose, onSaved }) {
   const toast = useToast();
   const [busy, setBusy]           = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [recSearch, setRecSearch] = useState('');
   const [form, setForm] = useState({
     name: '', slug: '', category: cats[0] || '', price: 0, stock: 0,
     weight: '', short: '', description: '', ingredients: '',
     allergens: [], tags: [], images: [], active: true,
     ...initial,
+    recommended: (initial.recommended || []).map(r => typeof r === 'object' ? r._id : r),
   });
   const isEdit = !!initial._id;
 
@@ -381,7 +394,7 @@ function ProductForm({ initial, cats, onClose, onSaved }) {
             <div className={styles.images}>
               {form.images.map((u, i) => (
                 <div key={i} className={styles.imageItem}>
-                  <img src={u} alt="" />
+                  <img src={u} alt={`Imagine produs ${i + 1}`} />
                   <button type="button" onClick={() => setForm(f => ({ ...f, images: f.images.filter((_, k) => k !== i) }))}>×</button>
                 </div>
               ))}
@@ -391,6 +404,49 @@ function ProductForm({ initial, cats, onClose, onSaved }) {
               </label>
             </div>
           </div>
+          <div className={styles.full}>
+            <div className={styles.chipLabel}>Produse recomandate</div>
+            <div className={styles.recPicker}>
+              {form.recommended.map(id => {
+                const p = allProducts.find(x => x._id === id);
+                return p ? (
+                  <span key={id} className={styles.chipTag}>
+                    {p.name}
+                    <button type="button" onClick={() => setForm(f => ({ ...f, recommended: f.recommended.filter(r => r !== id) }))}>×</button>
+                  </span>
+                ) : null;
+              })}
+              <input
+                className={styles.recSearch}
+                value={recSearch}
+                onChange={e => setRecSearch(e.target.value)}
+                placeholder="Caută produs…"
+              />
+            </div>
+            {recSearch.trim() && (
+              <div className={styles.recDropdown}>
+                {allProducts
+                  .filter(p => p._id !== initial._id && !form.recommended.includes(p._id) && p.name.toLowerCase().includes(recSearch.toLowerCase()))
+                  .slice(0, 6)
+                  .map(p => (
+                    <button
+                      key={p._id}
+                      type="button"
+                      className={styles.recOption}
+                      onClick={() => { setForm(f => ({ ...f, recommended: [...f.recommended, p._id] })); setRecSearch(''); }}
+                    >
+                      {p.name}
+                      <span className={styles.recOptionCat}>{p.category}</span>
+                    </button>
+                  ))
+                }
+                {allProducts.filter(p => p._id !== initial._id && !form.recommended.includes(p._id) && p.name.toLowerCase().includes(recSearch.toLowerCase())).length === 0 && (
+                  <div className={styles.recEmpty}>Niciun produs găsit</div>
+                )}
+              </div>
+            )}
+          </div>
+
           <label className={`${styles.full} ${styles.checkbox}`}>
             <input type="checkbox" checked={form.active} onChange={e => setForm(f => ({ ...f, active: e.target.checked }))} />
             Activ (vizibil pe site)

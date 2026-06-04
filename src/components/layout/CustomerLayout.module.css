@@ -1,9 +1,54 @@
-.outlet {
-  animation: fadeIn .28s ease;
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 860px) {
-  .content {
-    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+.outlet {
+  animation: pageEnter .38s cubic-bezier(.16,1,.3,1);
+}
+
+
+/* Custom cursor — desktop with fine pointer only */
+.cursorWrap { display: none; }
+
+@media (pointer: fine) {
+  .cursorWrap {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    pointer-events: none;
+    will-change: transform;
+  }
+  .cursorDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translate(-50%, -50%);
+    transition: width .22s cubic-bezier(.25,.46,.45,.94),
+                height .22s cubic-bezier(.25,.46,.45,.94),
+                background .22s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .dotExpanded {
+    width: 52px;
+    height: 52px;
+    background: var(--ink);
+  }
+  .cursorLabel {
+    font-size: 17px;
+    color: #fff;
+    font-weight: 700;
+    display: none;
+    line-height: 1;
+    font-family: var(--sans);
+  }
+  .dotExpanded .cursorLabel {
+    display: block;
   }
 }

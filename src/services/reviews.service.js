@@ -6,8 +6,8 @@ export const getProductReviews = (productId) =>
 export const submitReview = (productId, data) =>
   api.post(`/products/${productId}/reviews`, data).then(r => r.data);
 
-export const listReviews = (status) =>
-  api.get('/admin/reviews', { params: { status } }).then(r => r.data);
+export const listReviews = (status, page = 1, limit = 12) =>
+  api.get('/admin/reviews', { params: { status, page, limit } }).then(r => r.data);
 
 export const moderateReview = (id, status) =>
   api.patch(`/admin/reviews/${id}`, { status }).then(r => r.data);

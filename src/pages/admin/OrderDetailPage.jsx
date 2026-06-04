@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getOrder, updateOrderStatus } from '../../services/orders.service.js';
+import { getOrder, updateOrderStatus, toggleUrgent, updateInternalNote } from '../../services/orders.service.js';
 import { useToast } from '../../context/ToastContext.jsx';
 import Spinner from '../../components/ui/Spinner.jsx';
 import Badge from '../../components/ui/Badge.jsx';
@@ -8,14 +8,27 @@ import Button from '../../components/ui/Button.jsx';
 import { STATUS_LABEL, NEXT_STATUS, fmt, fmtDateTime } from '../../utils/format.js';
 import styles from './OrderDetailPage.module.css';
 
+const SOURCE_LABEL = { online: 'Online', telefon: 'Telefon', whatsapp: 'WhatsApp', instagram: 'Instagram', fata_in_fata: 'Față în față' };
+
 export default function OrderDetailPage() {
   const { id } = useParams();
   const [o, setO] = useState(null);
   const [confirming, setConfirming] = useState(null);
   const [error, setError] = useState(false);
+  const [urgentDialog, setUrgentDialog] = useState(false);
+  const [urgentNote, setUrgentNote] = useState('');
+  const [internalNote, setInternalNote] = useState('');
+  const [savingNote, setSavingNote] = useState(false);
   const toast = useToast();
 
-  useEffect(() => { getOrder(id).then(setO).catch(() => setError(true)); }, [id]);
+  useEffect(() => {
+    getOrder(id).then(order => {
+      setO(order);
+      setUrgentNote(order.urgentNote || '');
+      setInternalNote(order.internalNote || '');
+    }).catch(() => setError(true));
+  }, [id]);
+
   if (error) return (
     <div className={styles.errorWrap}>
       <p className={styles.errorText}>Comanda nu a putut fi încărcată.</p>
@@ -29,7 +42,6 @@ export default function OrderDetailPage() {
     if (!next) return;
     setConfirming({ action: 'advance', next });
   };
-
   const cancel = () => setConfirming({ action: 'cancel' });
 
   const doConfirm = async () => {
@@ -39,9 +51,29 @@ export default function OrderDetailPage() {
       const status = action === 'cancel' ? 'anulata' : next;
       const updated = await updateOrderStatus(o._id, status);
       setO(updated);
-      toast({ title: action === 'cancel' ? 'Comandă anulată' : `Status: ${STATUS_LABEL[status]}`, body: `Notificare trimisă către ${o.customer.email}` });
+      toast({ title: action === 'cancel' ? 'Comandă anulată' : `Status: ${STATUS_LABEL[status]}` });
     } catch (err) { toast({ title: 'Eroare', body: err.response?.data?.error || err.message }); }
   };
+
+  const handleUrgent = async (makeUrgent) => {
+    try {
+      const updated = await toggleUrgent(o._id, makeUrgent, urgentNote);
+      setO(updated);
+      setUrgentDialog(false);
+      toast({ title: makeUrgent ? 'Marcat urgent' : 'Urgență eliminată' });
+    } catch { toast({ title: 'Eroare' }); }
+  };
+
+  const saveNote = async () => {
+    setSavingNote(true);
+    try {
+      await updateInternalNote(o._id, internalNote);
+      toast({ title: 'Notă salvată' });
+    } catch { toast({ title: 'Eroare la salvare' }); }
+    finally { setSavingNote(false); }
+  };
+
+  const printOrder = () => window.print();
 
   return (
     <div>
@@ -60,19 +92,76 @@ export default function OrderDetailPage() {
         </div>
       )}
 
+      {urgentDialog && (
+        <div className={styles.overlay} onClick={() => setUrgentDialog(false)}>
+          <div className={styles.confirmModal} onClick={e => e.stopPropagation()}>
+            <h3>{o.urgent ? 'Elimini urgența?' : 'Marchezi ca urgent?'}</h3>
+            {!o.urgent && (
+              <div className={styles.urgentNoteField}>
+                <label>Motivul urgenței (opțional)</label>
+                <input
+                  value={urgentNote}
+                  onChange={e => setUrgentNote(e.target.value)}
+                  placeholder="ex: termen mâine, cadou pentru seară, client VIP"
+                />
+              </div>
+            )}
+            <div className={styles.confirmActions}>
+              <button className={styles.confirmCancel} onClick={() => setUrgentDialog(false)}>Renunță</button>
+              <button
+                className={`${styles.confirmOk} ${!o.urgent ? styles.confirmUrgent : ''}`}
+                onClick={() => handleUrgent(!o.urgent)}
+              >
+                {o.urgent ? 'Elimină urgența' : '⚠️ Marchează urgent'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Link to="/admin/comenzi" className={styles.back}>← Comenzi</Link>
 
       <header className={styles.head}>
         <div>
-          <h1>Comanda {o.orderNumber}</h1>
+          <h1>
+            {o.urgent && <span className={styles.urgentBadge}>⚠️ URGENT</span>}
+            Comanda {o.orderNumber}
+          </h1>
           <div className={styles.meta}>
             <Badge variant={o.status}>{STATUS_LABEL[o.status]}</Badge>
             <span>· Plasată la {fmtDateTime(o.createdAt)}</span>
+            {o.source && o.source !== 'online' && (
+              <span className={styles.sourceTag}>· {SOURCE_LABEL[o.source]}</span>
+            )}
           </div>
+          {o.urgent && o.urgentNote && (
+            <div className={styles.urgentNote}>{o.urgentNote}</div>
+          )}
         </div>
         <div className={styles.actions}>
-          {NEXT_STATUS[o.status] && <Button variant="primary" onClick={advance}>Avansează → {STATUS_LABEL[NEXT_STATUS[o.status]]}</Button>}
-          {o.status !== 'anulata' && o.status !== 'livrata' && <Button variant="outline" onClick={cancel}>Anulează</Button>}
+          {NEXT_STATUS[o.status] && (
+            <Button variant="primary" onClick={advance}>
+              Avansează → {STATUS_LABEL[NEXT_STATUS[o.status]]}
+            </Button>
+          )}
+          {o.status !== 'anulata' && o.status !== 'livrata' && (
+            <Button variant="outline" onClick={cancel}>Anulează</Button>
+          )}
+          <button
+            className={`${styles.urgentBtn} ${o.urgent ? styles.urgentBtnActive : ''}`}
+            onClick={() => setUrgentDialog(true)}
+            title={o.urgent ? 'Elimină urgența' : 'Marchează urgent'}
+          >
+            ⚠️ {o.urgent ? 'Urgent' : 'Marchează urgent'}
+          </button>
+          <button className={styles.printBtn} onClick={printOrder}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <polyline points="6 9 6 2 18 2 18 9"/>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+              <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+            Print
+          </button>
         </div>
       </header>
 
@@ -93,7 +182,10 @@ export default function OrderDetailPage() {
           {o.discount > 0 && <div className={styles.row}><span>Discount ({o.promoCode})</span><span>−{fmt(o.discount)} lei</span></div>}
           <div className={`${styles.row} ${styles.total}`}><span>Total</span><span>{fmt(o.total)} lei</span></div>
           <div className={styles.payment}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/>
+              <path d="M6 12h.01M18 12h.01"/>
+            </svg>
             Plată cash la {o.method === 'livrare' ? 'livrare' : 'ridicare'}
           </div>
         </section>
@@ -103,14 +195,24 @@ export default function OrderDetailPage() {
             <h3>Client</h3>
             <div className={styles.field}><span>Nume</span><strong>{o.customer.name}</strong></div>
             <div className={styles.field}><span>Telefon</span><a href={`tel:${o.customer.phone}`}>{o.customer.phone}</a></div>
-            <div className={styles.field}><span>Email</span><a href={`mailto:${o.customer.email}`}>{o.customer.email}</a></div>
+            {o.customer.email && o.customer.email !== 'admin@intern' && (
+              <div className={styles.field}><span>Email</span><a href={`mailto:${o.customer.email}`}>{o.customer.email}</a></div>
+            )}
+            {o.source && (
+              <div className={styles.field}><span>Sursă</span><span>{SOURCE_LABEL[o.source] || o.source}</span></div>
+            )}
             <div className={styles.contactBtns}>
               <a href={`tel:${o.customer.phone}`} className={styles.contactBtn}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.33 2 2 0 0 1 3.6 1.24h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.84a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.01z"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.33 2 2 0 0 1 3.6 1.24h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.84a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.01z"/>
+                </svg>
                 Sună
               </a>
-              <a href={`https://wa.me/${(() => { const d = o.customer.phone.replace(/\D/g, ''); return d.startsWith('0') ? `40${d.slice(1)}` : d; })()}`} target="_blank" rel="noreferrer" className={styles.contactBtn}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <a href={`https://wa.me/${(() => { const d = o.customer.phone.replace(/\D/g, ''); return d.startsWith('0') ? `40${d.slice(1)}` : d; })()}`}
+                target="_blank" rel="noreferrer" className={styles.contactBtn}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
                 WhatsApp
               </a>
             </div>
@@ -127,6 +229,25 @@ export default function OrderDetailPage() {
               : o.pickupTime && <div className={styles.field}><span>Ora</span><strong>{o.pickupTime}</strong></div>
             }
             {o.note && <div className={styles.note}><strong>Notă client:</strong> {o.note}</div>}
+          </section>
+
+          <section className={styles.card}>
+            <h3>Notă internă</h3>
+            <p className={styles.noteHelp}>Vizibilă doar în admin, nu se trimite clientului.</p>
+            <textarea
+              className={styles.internalNoteArea}
+              value={internalNote}
+              onChange={e => setInternalNote(e.target.value)}
+              placeholder="ex: livrare joi, client fidel, a cerut fără alune…"
+              rows={3}
+            />
+            <button
+              className={styles.saveNoteBtn}
+              onClick={saveNote}
+              disabled={savingNote}
+            >
+              {savingNote ? 'Se salvează…' : 'Salvează nota'}
+            </button>
           </section>
 
           <section className={styles.card}>

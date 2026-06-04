@@ -2,7 +2,16 @@ import api from './api.js';
 export const stats = (period) => api.get('/admin/stats', { params: { period } }).then(r => r.data);
 export const topProducts = (period) => api.get('/admin/top-products', { params: { period } }).then(r => r.data);
 export const weekChart = () => api.get('/admin/week-chart').then(r => r.data);
-export const listCustomers = () => api.get('/customers').then(r => r.data);
+export const sourceStats = (months) => api.get('/admin/source-stats', { params: { months } }).then(r => r.data);
+export const productionSummary = () => api.get('/admin/production-summary').then(r => r.data);
+export const todayDeliveries = () => api.get('/admin/today-deliveries').then(r => r.data);
+export const urgentOrders = () => api.get('/admin/urgent-orders').then(r => r.data);
+export const calendarOrders = (year, month) => api.get('/admin/calendar-orders', { params: { year, month } }).then(r => r.data);
+export const getAnalytics   = ()     => api.get('/admin/analytics').then(r => r.data);
+export const listCustomers = (params) => api.get('/customers', { params }).then(r => r.data);
+export const getCustomer   = (id)     => api.get(`/customers/${id}`).then(r => r.data);
+export const lookupByPhone = (phone) => api.get('/customers/lookup', { params: { phone } }).then(r => r.data);
+export const updateCustomerNote = (id, note) => api.patch(`/customers/${id}/note`, { note }).then(r => r.data);
 export const exportCustomers = async () => {
   const res = await api.get('/customers/export', { responseType: 'blob' });
   const url = URL.createObjectURL(new Blob([res.data], { type: 'text/csv' }));

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import api from '../services/api.js';
 
 const CartContext = createContext(null);
@@ -9,6 +9,10 @@ export function CartProvider({ children }) {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
     catch { return []; }
   });
+  const [cartOpen, setCartOpen] = useState(false);
+  const openCart  = useCallback(() => setCartOpen(true),  []);
+  const closeCart = useCallback(() => setCartOpen(false), []);
+
   const [favorites, setFavorites] = useState(() => {
     try { return JSON.parse(localStorage.getItem('favorites')) || []; }
     catch { return []; }
@@ -47,7 +51,7 @@ export function CartProvider({ children }) {
   const count = cart.reduce((s, i) => s + i.qty, 0);
 
   return (
-    <CartContext.Provider value={{ cart, favorites, addToCart, updateQty, removeFromCart, clearCart, toggleFavorite, initFavorites, subtotal, count }}>
+    <CartContext.Provider value={{ cart, favorites, addToCart, updateQty, removeFromCart, clearCart, toggleFavorite, initFavorites, subtotal, count, cartOpen, openCart, closeCart }}>
       {children}
     </CartContext.Provider>
   );

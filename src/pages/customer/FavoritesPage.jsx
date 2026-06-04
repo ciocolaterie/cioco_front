@@ -26,7 +26,13 @@ export default function FavoritesPage() {
   const favs = all;
   return (
     <div className={`container ${styles.page}`}>
-      <h1 className={styles.title}>Favorite</h1>
+      <div className={styles.intro}>
+        <div className={styles.eyebrow}>COLECȚIA MEA</div>
+        <h1 className={styles.title}>Favorite</h1>
+        {favs.length > 0 && (
+          <p className={styles.lead}>{favs.length} produs{favs.length !== 1 ? 'e' : ''} salvat{favs.length !== 1 ? 'e' : ''}</p>
+        )}
+      </div>
       {favs.length === 0
         ? <Empty icon={HEART_ICON} title="Nimic la favorite încă" body="Apasă inima pe orice produs ca să-l salvezi aici." action={<Link to="/catalog" className={styles.link}>Catalog →</Link>} />
         : <div className={styles.grid}>

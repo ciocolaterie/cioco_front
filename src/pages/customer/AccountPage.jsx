@@ -112,11 +112,10 @@ export default function AccountPage() {
         <form onSubmit={savePwd} className={styles.editForm}>
           <h3>Schimbă parola</h3>
           <div className={styles.editFields}>
-            <label>
+            <label className={styles.fieldFull}>
               Parola curentă
               <input type="password" value={pwdForm.currentPassword} onChange={e => setPwdForm(f => ({ ...f, currentPassword: e.target.value }))} required autoFocus />
             </label>
-            <span />
             <label>
               Parolă nouă
               <input type="password" value={pwdForm.newPassword} onChange={e => setPwdForm(f => ({ ...f, newPassword: e.target.value }))} required minLength={6} />
@@ -132,11 +131,22 @@ export default function AccountPage() {
         </form>
       )}
 
-      <h2>Comenzile tale</h2>
+      <div className={styles.ordersHead}>
+        <div>
+          <div className={styles.ordersEyebrow}>ISTORIC</div>
+          <h2 className={styles.ordersTitle}>Comenzile tale</h2>
+        </div>
+      </div>
+
       {!orders ? <SkeletonList count={3} /> :
         orders.length === 0
           ? <div className={styles.empty}>
-              Nu ai nicio comandă încă. <Link to="/catalog" className={styles.emptyLink}>Vezi catalogul →</Link>
+              <svg className={styles.emptyIcon} width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+              </svg>
+              <p className={styles.emptyTitle}>Nicio comandă încă</p>
+              <p className={styles.emptyBody}>Produsele comandate vor apărea aici.</p>
+              <Link to="/catalog" className={styles.emptyLink}>Descoperă catalogul →</Link>
             </div>
           : <div className={styles.list}>
               {orders.slice(0, visibleOrders).map(o => (
@@ -145,7 +155,7 @@ export default function AccountPage() {
                     <div className={styles.no}>{o.orderNumber}</div>
                     <div className={styles.date}>{fmtDateTime(o.createdAt)}</div>
                   </div>
-                  <div className={styles.items}>{o.items.length} produs{o.items.length > 1 ? 'e' : ''}</div>
+                  <div className={styles.orderItems}>{o.items.length} produs{o.items.length > 1 ? 'e' : ''}</div>
                   <Badge variant={o.status}>{STATUS_LABEL[o.status]}</Badge>
                   <strong>{fmt(o.total)} lei</strong>
                 </Link>

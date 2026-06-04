@@ -28,6 +28,7 @@ export default function CheckoutPage() {
     note: '',
   });
   const [submitting, setSubmitting] = useState(false);
+  const [touched, setTouched] = useState({});
   const [promoCode, setPromoCode] = useState('');
   const [promoResult, setPromoResult] = useState(null);
   const [promoError, setPromoError] = useState('');
@@ -50,6 +51,16 @@ export default function CheckoutPage() {
 
   if (cart.length === 0) return <Navigate to="/cos" replace />;
   const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
+  const touch = (k) => () => setTouched(t => ({ ...t, [k]: true }));
+
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const fieldErrors = {
+    name:    !form.name.trim() ? 'Numele este obligatoriu' : form.name.trim().length < 2 ? 'Minim 2 caractere' : null,
+    phone:   !form.phone.trim() ? 'Telefonul este obligatoriu' : null,
+    email:   !form.email.trim() ? 'Emailul este obligatoriu' : !emailRe.test(form.email) ? 'Adresă de email invalidă' : null,
+    address: method === 'livrare' && !form.address.trim() ? 'Adresa de livrare este obligatorie' : null,
+  };
+  const hasErrors = Object.values(fieldErrors).some(Boolean);
   const fee = method === 'livrare' ? (zones.find(z => z.id === zone)?.fee || 0) : 0;
   const discount = promoResult?.discount || 0;
   const total = subtotal + fee - discount;
@@ -77,8 +88,8 @@ export default function CheckoutPage() {
 
   const submit = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.phone || !form.email) return toast({ title: 'Completează datele de contact' });
-    if (method === 'livrare' && !form.address) return toast({ title: 'Adresa de livrare e obligatorie' });
+    setTouched({ name: true, phone: true, email: true, address: true });
+    if (hasErrors) return;
     setSubmitting(true);
     try {
       const order = await createOrder({
@@ -100,6 +111,7 @@ export default function CheckoutPage() {
 
   return (
     <div className={`container ${styles.page}`}>
+      <div className={styles.eyebrow}>COMANDĂ NOUĂ</div>
       <h1 className={styles.title}>Finalizare comandă</h1>
       <form onSubmit={submit} className={styles.grid}>
         <div className={styles.col}>
@@ -144,16 +156,38 @@ export default function CheckoutPage() {
           <section className={styles.card}>
             <h3>Date de contact</h3>
             <div className={styles.fields}>
-              <label>Nume complet<input value={form.name} onChange={set('name')} required /></label>
-              <label>Telefon<input value={form.phone} onChange={set('phone')} required /></label>
-              <label className={styles.full}>Email<input type="email" value={form.email} onChange={set('email')} required /></label>
+              <div className={styles.floatField}>
+                <input id="f-name" value={form.name} onChange={set('name')} onBlur={touch('name')} placeholder=" " className={touched.name && fieldErrors.name ? styles.inputError : ''} />
+                <label htmlFor="f-name">Nume complet</label>
+                {touched.name && fieldErrors.name && <span className={styles.fieldError}>{fieldErrors.name}</span>}
+              </div>
+              <div className={styles.floatField}>
+                <input id="f-phone" value={form.phone} onChange={set('phone')} onBlur={touch('phone')} placeholder=" " className={touched.phone && fieldErrors.phone ? styles.inputError : ''} />
+                <label htmlFor="f-phone">Telefon</label>
+                {touched.phone && fieldErrors.phone && <span className={styles.fieldError}>{fieldErrors.phone}</span>}
+              </div>
+              <div className={`${styles.floatField} ${styles.full}`}>
+                <input id="f-email" type="email" value={form.email} onChange={set('email')} onBlur={touch('email')} placeholder=" " className={touched.email && fieldErrors.email ? styles.inputError : ''} />
+                <label htmlFor="f-email">Email</label>
+                {touched.email && fieldErrors.email && <span className={styles.fieldError}>{fieldErrors.email}</span>}
+              </div>
               {method === 'livrare' && (
-                <label className={styles.full}>Adresă completă<input value={form.address} onChange={set('address')} required /></label>
+                <div className={`${styles.floatField} ${styles.full}`}>
+                  <input id="f-address" value={form.address} onChange={set('address')} onBlur={touch('address')} placeholder=" " className={touched.address && fieldErrors.address ? styles.inputError : ''} />
+                  <label htmlFor="f-address">Adresă completă</label>
+                  {touched.address && fieldErrors.address && <span className={styles.fieldError}>{fieldErrors.address}</span>}
+                </div>
               )}
               {method === 'ridicare' && (
-                <label className={styles.full}>Ora estimată ridicare<input type="time" value={form.pickupTime} onChange={set('pickupTime')} /></label>
+                <div className={`${styles.floatField} ${styles.full} ${styles.floatFieldTime}`}>
+                  <input id="f-pickup" type="time" value={form.pickupTime} onChange={set('pickupTime')} />
+                  <label htmlFor="f-pickup">Ora estimată ridicare</label>
+                </div>
               )}
-              <label className={styles.full}>Notă pentru noi (opțional)<textarea value={form.note} onChange={set('note')} rows={3} /></label>
+              <div className={`${styles.floatField} ${styles.full} ${styles.floatFieldArea}`}>
+                <textarea id="f-note" value={form.note} onChange={set('note')} rows={3} placeholder=" " />
+                <label htmlFor="f-note">Notă pentru noi (opțional)</label>
+              </div>
             </div>
           </section>
 
@@ -175,12 +209,20 @@ export default function CheckoutPage() {
 
         <aside className={styles.summary}>
           <h3>Comanda ta</h3>
-          {cart.map(i => (
-            <div key={i.product} className={styles.line}>
-              <span>{i.qty} × {i.name}</span>
-              <strong>{(i.price * i.qty).toFixed(2)} lei</strong>
-            </div>
-          ))}
+          <div className={styles.summaryItems}>
+            {cart.map(i => (
+              <div key={i.product} className={styles.summaryItem}>
+                <div className={styles.summaryThumb}>
+                  {i.image ? <img src={i.image} alt={i.name} /> : <div className={styles.summaryPlaceholder} />}
+                </div>
+                <div className={styles.summaryInfo}>
+                  <span className={styles.summaryName}>{i.name}</span>
+                  <span className={styles.summaryQty}>{i.qty} × {i.price.toFixed(2)} lei</span>
+                </div>
+                <strong className={styles.summaryPrice}>{(i.price * i.qty).toFixed(2)} lei</strong>
+              </div>
+            ))}
+          </div>
           <div className={styles.div} />
           <div className={styles.row}><span>Subtotal</span><span>{subtotal.toFixed(2)} lei</span></div>
           {fee > 0 && <div className={styles.row}><span>Livrare</span><span>{fee.toFixed(2)} lei</span></div>}

@@ -1,0 +1,65 @@
+.banner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 48px 10px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  position: relative;
+  z-index: 101;
+  animation: slideDown .3s ease;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-100%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.text { text-align: center; line-height: 1.4; }
+
+.close {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: .65;
+  display: flex;
+  padding: 4px;
+  border-radius: 4px;
+  transition: opacity .15s;
+  flex-shrink: 0;
+}
+.close:hover { opacity: 1; }
+
+/* Color variants */
+.accent {
+  background: var(--accent);
+  color: #fff;
+}
+.accent .close { color: #fff; }
+
+.dark {
+  background: var(--ink);
+  color: #fff;
+}
+.dark .close { color: #fff; }
+
+.green {
+  background: var(--success);
+  color: #fff;
+}
+.green .close { color: #fff; }
+
+.red {
+  background: var(--error);
+  color: #fff;
+}
+.red .close { color: #fff; }
+
+@media (max-width: 480px) {
+  .banner { font-size: 12px; padding: 9px 40px 9px 16px; }
+}

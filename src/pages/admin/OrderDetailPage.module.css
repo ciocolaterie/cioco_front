@@ -101,8 +101,68 @@
   border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer;
 }
 .confirmOk:hover { background: var(--accent); }
-.confirmDanger { background: #DC2626; }
+.confirmDanger { background: var(--error); }
 .confirmDanger:hover { background: #b91c1c; }
+.confirmUrgent { background: #EA580C; }
+.confirmUrgent:hover { background: #C2410C; }
+
+/* Urgent */
+.urgentBadge {
+  display: inline-block; font-size: 12px; font-weight: 700;
+  color: #C2410C; background: #FFF7ED; border: 1px solid #FED7AA;
+  border-radius: 6px; padding: 2px 8px; margin-right: 8px; vertical-align: middle;
+}
+.urgentNote {
+  font-size: 13px; color: var(--warning); background: #FFF7ED;
+  border-radius: 8px; padding: 8px 12px; margin-top: 8px;
+  border-left: 3px solid #FB923C;
+}
+.urgentBtn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border: 1.5px solid var(--line);
+  background: var(--bg-2); border-radius: 999px; font-size: 13px;
+  cursor: pointer; transition: all .15s;
+}
+.urgentBtn:hover { border-color: #FB923C; }
+.urgentBtnActive { border-color: #FB923C !important; color: #EA580C; background: #FFF7ED !important; }
+
+/* Source tag */
+.sourceTag { font-size: 13px; color: var(--ink-3); }
+
+/* Print button */
+.printBtn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border: 1.5px solid var(--line);
+  background: var(--bg-2); border-radius: 999px; font-size: 13px;
+  cursor: pointer; transition: border-color .15s;
+}
+.printBtn:hover { border-color: var(--ink-3); }
+
+/* Internal note */
+.noteHelp { font-size: 12px; color: var(--ink-3); margin: 0 0 10px; }
+.internalNoteArea {
+  width: 100%; padding: 10px 12px; border: 1.5px solid var(--line);
+  border-radius: 8px; font-size: 13px; font-family: inherit;
+  resize: vertical; outline: none; background: var(--bg);
+  transition: border-color .15s;
+}
+.internalNoteArea:focus { border-color: var(--ink-3); }
+.saveNoteBtn {
+  margin-top: 8px; padding: 8px 16px; background: var(--ink); color: var(--bg);
+  border: none; border-radius: 8px; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: background .15s;
+}
+.saveNoteBtn:hover:not(:disabled) { background: var(--accent); }
+.saveNoteBtn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Urgent note field in modal */
+.urgentNoteField { text-align: left; margin-bottom: 20px; }
+.urgentNoteField label { display: block; font-size: 12px; color: var(--ink-2); margin-bottom: 6px; }
+.urgentNoteField input {
+  width: 100%; padding: 8px 12px; border: 1.5px solid var(--line);
+  border-radius: 8px; font-size: 13px; outline: none;
+}
+.urgentNoteField input:focus { border-color: var(--accent); }
 
 @media (max-width: 768px) {
   .grid { grid-template-columns: 1fr; }

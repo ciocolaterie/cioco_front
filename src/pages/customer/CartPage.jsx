@@ -19,6 +19,7 @@ export default function CartPage() {
   if (cart.length === 0) {
     return (
       <div className={`container ${styles.page}`}>
+        <div className={styles.eyebrow}>COȘUL TĂU</div>
         <h1 className={styles.title}>Coș</h1>
         <Empty
           icon={CART_ICON}
@@ -32,6 +33,7 @@ export default function CartPage() {
 
   return (
     <div className={`container ${styles.page}`}>
+      <div className={styles.eyebrow}>COȘUL TĂU</div>
       <h1 className={styles.title}>Coș</h1>
       <div className={styles.grid}>
         <div className={styles.items}>

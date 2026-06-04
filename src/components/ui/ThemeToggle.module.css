@@ -1,0 +1,19 @@
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+  flex-shrink: 0;
+}
+.btn:hover {
+  background: var(--bg-3);
+  color: var(--ink);
+  border-color: var(--ink-3);
+}

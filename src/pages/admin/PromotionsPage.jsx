@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import * as promoApi from '../../services/promotions.service.js';
 import { useToast } from '../../context/ToastContext.jsx';
 import Spinner from '../../components/ui/Spinner.jsx';
+import ConfirmDialog from '../../components/ui/ConfirmDialog.jsx';
 import styles from './PromotionsPage.module.css';
 
 function fmtExpiry(d) {
@@ -40,6 +41,7 @@ export default function PromotionsPage() {
   const toast = useToast();
   const [promos, setPromos]   = useState(null);
   const [editing, setEditing] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const load = () => promoApi.listPromotions().then(setPromos).catch(() => setPromos([]));
   useEffect(() => { load(); }, []);
@@ -51,7 +53,6 @@ export default function PromotionsPage() {
   };
 
   const onDelete = async (p) => {
-    if (!confirm(`Ștergi codul ${p.code}?`)) return;
     await promoApi.deletePromotion(p._id);
     toast({ title: 'Promoție ștearsă' });
     load();
@@ -62,11 +63,11 @@ export default function PromotionsPage() {
   const totalUses = (promos || []).reduce((s, p) => s + (p.uses || 0), 0);
 
   return (
-    <div>
+    <div className={styles.page}>
       <header className={styles.head}>
         <div>
           <h1>Promoții</h1>
-          <p>Coduri de discount</p>
+          <p>{promos ? `${promos.length} coduri · ${active} active · ${expired} expirate` : 'Coduri de discount'}</p>
         </div>
         <button className={styles.addBtn} onClick={() => setEditing({})}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -147,7 +148,7 @@ export default function PromotionsPage() {
                           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                         </svg>
                       </button>
-                      <button className={`${styles.iconBtn} ${styles.iconBtnDanger}`} onClick={() => onDelete(p)} title="Șterge">
+                      <button className={`${styles.iconBtn} ${styles.iconBtnDanger}`} onClick={() => setDeleteTarget(p)} title="Șterge">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <polyline points="3 6 5 6 21 6"/>
                           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
@@ -196,7 +197,7 @@ export default function PromotionsPage() {
                           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                         </svg>
                       </button>
-                      <button className={`${styles.iconBtn} ${styles.iconBtnDanger}`} onClick={() => onDelete(p)} title="Șterge">
+                      <button className={`${styles.iconBtn} ${styles.iconBtnDanger}`} onClick={() => setDeleteTarget(p)} title="Șterge">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <polyline points="3 6 5 6 21 6"/>
                           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
@@ -218,6 +219,15 @@ export default function PromotionsPage() {
           onSaved={() => { setEditing(null); load(); }}
         />
       )}
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title={`Ștergi codul "${deleteTarget?.code}"?`}
+        body="Codul promoțional va fi eliminat definitiv."
+        confirmLabel="Șterge"
+        danger
+        onConfirm={() => { const p = deleteTarget; setDeleteTarget(null); onDelete(p); }}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }

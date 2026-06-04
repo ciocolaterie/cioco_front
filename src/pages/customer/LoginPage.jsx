@@ -32,28 +32,53 @@ export default function LoginPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.card}>
-        <div className={styles.tabs}>
-          <button className={mode === 'login' ? styles.active : ''} onClick={() => setMode('login')}>Login</button>
-          <button className={mode === 'register' ? styles.active : ''} onClick={() => setMode('register')}>Înregistrare</button>
-        </div>
-        <h1>{mode === 'login' ? 'Bine ai revenit' : 'Creează cont'}</h1>
-        <form onSubmit={submit} className={styles.form}>
-          {mode === 'register' && (
-            <>
-              <label>Nume<input value={form.name} onChange={set('name')} required /></label>
-              <label>Telefon<input value={form.phone} onChange={set('phone')} /></label>
-            </>
-          )}
-          <label>Email<input type="email" value={form.email} onChange={set('email')} required /></label>
-          <label>Parolă<input type="password" value={form.password} onChange={set('password')} required /></label>
-          {mode === 'login' && (
-            <Link to="/forgot-password" className={styles.forgotLink}>Ai uitat parola?</Link>
-          )}
-          <button type="submit" disabled={busy}>{busy ? '…' : (mode === 'login' ? 'Intră în cont' : 'Creează cont')}</button>
-        </form>
-        <Link to="/" className={styles.back}>← Înapoi la magazin</Link>
+
+      {/* Left — brand panel */}
+      <div className={styles.panel}>
+        <span className={styles.panelMark}>c</span>
+        <div className={styles.panelLine} />
+        <p className={styles.panelQuote}>„Ciocolată bună<br />nu se grăbește."</p>
+        <span className={styles.panelBy}>— Atelierul nostru</span>
       </div>
+
+      {/* Right — form */}
+      <div className={styles.formSide}>
+        <div className={styles.card}>
+          <div className={styles.tabs}>
+            <button className={mode === 'login' ? styles.active : ''} onClick={() => setMode('login')}>Login</button>
+            <button className={mode === 'register' ? styles.active : ''} onClick={() => setMode('register')}>Înregistrare</button>
+          </div>
+          <h1>{mode === 'login' ? 'Bine ai revenit' : 'Creează cont'}</h1>
+          <form onSubmit={submit} className={styles.form}>
+            {mode === 'register' && (
+              <>
+                <div className={styles.floatField}>
+                  <input id="l-name" value={form.name} onChange={set('name')} placeholder=" " required />
+                  <label htmlFor="l-name">Nume</label>
+                </div>
+                <div className={styles.floatField}>
+                  <input id="l-phone" value={form.phone} onChange={set('phone')} placeholder=" " />
+                  <label htmlFor="l-phone">Telefon</label>
+                </div>
+              </>
+            )}
+            <div className={styles.floatField}>
+              <input id="l-email" type="email" value={form.email} onChange={set('email')} placeholder=" " required />
+              <label htmlFor="l-email">Email</label>
+            </div>
+            <div className={styles.floatField}>
+              <input id="l-pwd" type="password" value={form.password} onChange={set('password')} placeholder=" " required />
+              <label htmlFor="l-pwd">Parolă</label>
+            </div>
+            {mode === 'login' && (
+              <Link to="/forgot-password" className={styles.forgotLink}>Ai uitat parola?</Link>
+            )}
+            <button type="submit" disabled={busy}>{busy ? 'Se procesează…' : (mode === 'login' ? 'Intră în cont' : 'Creează cont')}</button>
+          </form>
+          <Link to="/" className={styles.back}>← Înapoi la magazin</Link>
+        </div>
+      </div>
+
     </div>
   );
 }

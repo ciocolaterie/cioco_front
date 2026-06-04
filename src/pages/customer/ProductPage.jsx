@@ -1,15 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getProduct } from '../../services/products.service.js';
+import { getProduct, listProducts } from '../../services/products.service.js';
 import { getProductReviews, submitReview } from '../../services/reviews.service.js';
+import api from '../../services/api.js';
 import { useCart } from '../../context/CartContext.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useToast } from '../../context/ToastContext.jsx';
 import Spinner from '../../components/ui/Spinner.jsx';
 import Badge from '../../components/ui/Badge.jsx';
-import usePageTitle from '../../hooks/usePageTitle.js';
+import ProductCard from '../../components/products/ProductCard.jsx';
+import { SkeletonGrid } from '../../components/ui/Skeleton.jsx';
+import useSeo from '../../hooks/useSeo.js';
 import { fmtDate } from '../../utils/format.js';
 import styles from './ProductPage.module.css';
+
+const AVATAR_COLORS = ['#7B3D1D','#16a34a','#2563eb','#db2777','#ea580c','#0891b2','#d97706','#0f766e'];
+function avatarColor(name = '') {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xffffffff;
+  return AVATAR_COLORS[Math.abs(h) % AVATAR_COLORS.length];
+}
+function avatarInitials(name = '') {
+  return (name || '?').trim().split(/\s+/).slice(0, 2).map(w => w[0]?.toUpperCase()).join('') || '?';
+}
 
 function RatingStars({ rating, count }) {
   const full = Math.floor(rating);
@@ -66,6 +79,22 @@ export default function ProductPage() {
     setTimeout(() => setAddedFlash(false), 1600);
   };
 
+  const handleShare = async () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      try { await navigator.share({ title: p.name, text: p.short || '', url }); } catch {}
+    } else {
+      try { await navigator.clipboard.writeText(url); toast({ title: 'Link copiat' }); } catch {}
+    }
+  };
+
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const touchStartX = useRef(null);
+  const [related, setRelated] = useState(null);
+  const [alertEmail, setAlertEmail] = useState('');
+  const [alertSent, setAlertSent] = useState(false);
+  const [alertLoading, setAlertLoading] = useState(false);
+
   const [reviews, setReviews] = useState(null);
   const [showAll, setShowAll] = useState(false);
   const [reviewForm, setReviewForm] = useState({ name: '', email: '', rating: 0, text: '' });
@@ -73,9 +102,35 @@ export default function ProductPage() {
   const [submitted, setSubmitted] = useState(false);
   const [reviewError, setReviewError] = useState('');
 
-  usePageTitle(p?.name || '');
+  useSeo({
+    title: p?.name,
+    description: p?.short || p?.description,
+    image: p?.images?.[0],
+    type: 'product',
+    jsonLd: p ? {
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: p.name,
+      description: p.short || p.description,
+      image: p.images,
+      offers: {
+        '@type': 'Offer',
+        price: p.price,
+        priceCurrency: 'RON',
+        availability: p.stock > 0
+          ? 'https://schema.org/InStock'
+          : 'https://schema.org/OutOfStock',
+      },
+    } : undefined,
+  });
   useEffect(() => { getProduct(id).then(setP).catch(() => setError(true)); }, [id]);
   useEffect(() => { getProductReviews(id).then(setReviews).catch(() => setReviews([])); }, [id]);
+  useEffect(() => {
+    if (!p?.category) return;
+    listProducts({ category: p.category, limit: 4 })
+      .then(all => setRelated(all.filter(x => x._id !== id).slice(0, 3)))
+      .catch(() => setRelated([]));
+  }, [p?.category, id]);
   useEffect(() => {
     if (user) setReviewForm(f => ({ ...f, name: user.name || '', email: user.email || '' }));
   }, [user]);
@@ -87,10 +142,21 @@ export default function ProductPage() {
     obs.observe(el);
     return () => obs.disconnect();
   }, [p]);
+
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const onKey = (e) => {
+      if (e.key === 'Escape') setLightboxOpen(false);
+      if (e.key === 'ArrowRight') setActive(a => Math.min((p?.images?.length ?? 1) - 1, a + 1));
+      if (e.key === 'ArrowLeft') setActive(a => Math.max(0, a - 1));
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [lightboxOpen, p]);
   if (error) return (
-    <div className={`container ${styles.page}`} style={{ textAlign: 'center', padding: '4rem 1rem' }}>
-      <p style={{ fontSize: '1.1rem', color: '#6b7280' }}>Produsul nu a fost găsit.</p>
-      <Link to="/catalog" style={{ color: 'var(--accent)' }}>← Înapoi la catalog</Link>
+    <div className={`container ${styles.errorPage}`}>
+      <p className={styles.errorText}>Produsul nu a fost găsit.</p>
+      <Link to="/catalog" className={styles.errorLink}>← Înapoi la catalog</Link>
     </div>
   );
   if (!p) return <Spinner />;
@@ -125,7 +191,10 @@ export default function ProductPage() {
       </nav>
       <div className={styles.grid}>
         <div className={styles.gallery}>
-          <div className={styles.mainImage}>
+          <div
+            className={styles.mainImage}
+            onClick={() => { if (p.images?.[active]) setLightboxOpen(true); }}
+          >
             {p.images?.[active]
               ? <img key={active} className={styles.mainImg} src={p.images[active]} alt={p.name} />
               : <div className={styles.placeholder}>
@@ -136,7 +205,7 @@ export default function ProductPage() {
             <div className={styles.thumbs}>
               {p.images.map((src, i) => (
                 <button key={i} className={`${styles.thumb} ${i === active ? styles.thumbActive : ''}`} onClick={() => setActive(i)}>
-                  <img src={src} alt={`${p.name} ${i + 1}`} />
+                  <img src={src} alt={`${p.name} ${i + 1}`} loading="lazy" />
                 </button>
               ))}
             </div>
@@ -153,7 +222,7 @@ export default function ProductPage() {
             {p.weight && <span className={styles.metaSep}>·</span>}
             {p.weight && <span>{p.weight}</span>}
             <Badge variant={p.stock > 0 ? 'success' : 'anulata'}>
-              {p.stock > 0 ? `În stoc (${p.stock})` : 'Stoc epuizat'}
+              {p.stock === 0 ? 'Stoc epuizat' : p.stock <= 5 ? `Ultimele ${p.stock}` : 'În stoc'}
             </Badge>
           </div>
           <p className={styles.short}>{p.short}</p>
@@ -189,7 +258,47 @@ export default function ProductPage() {
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill={isFav ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </button>
+            <button className={styles.shareIconBtn} onClick={handleShare} aria-label="Distribuie produsul">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+              </svg>
+            </button>
           </div>
+
+          {p.stock === 0 && (
+            alertSent ? (
+              <div className={styles.stockAlertSuccess}>
+                ✓ Te vom anunța când produsul revine în stoc.
+              </div>
+            ) : (
+              <form
+                className={styles.stockAlertForm}
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setAlertLoading(true);
+                  try { await api.post(`/products/${p._id}/stock-alert`, { email: alertEmail }); setAlertSent(true); }
+                  catch {}
+                  setAlertLoading(false);
+                }}
+              >
+                <p className={styles.stockAlertMsg}>Anunță-mă când revine în stoc:</p>
+                <div className={styles.stockAlertRow}>
+                  <input
+                    type="email"
+                    value={alertEmail}
+                    onChange={e => setAlertEmail(e.target.value)}
+                    placeholder="email@tău.ro"
+                    className={styles.stockAlertInput}
+                    required
+                  />
+                  <button type="submit" className={styles.stockAlertBtn} disabled={alertLoading}>
+                    {alertLoading ? '…' : 'Anunță-mă'}
+                  </button>
+                </div>
+              </form>
+            )
+          )}
 
           <div className={styles.trustRow}>
             <span className={styles.trustRowItem}>
@@ -262,7 +371,41 @@ export default function ProductPage() {
           {reviews?.length > 0 && <span className={styles.reviewsCount}>{reviews.length}</span>}
         </h2>
 
-        {/* Form first */}
+        {/* Reviews list first */}
+        {reviews === null ? <Spinner /> : reviews.length === 0 ? (
+          <p className={styles.reviewsEmpty}>Nicio recenzie încă. Fii primul care lasă un feedback!</p>
+        ) : (
+          <>
+            <div className={styles.reviewList}>
+              {(showAll ? reviews : reviews.slice(0, 4)).map(r => (
+                <div key={r._id} className={styles.reviewItem}>
+                  <div className={styles.reviewTop}>
+                    <div className={styles.reviewTopLeft}>
+                      <div className={styles.reviewAvatar} style={{ background: avatarColor(r.name) }}>
+                        {avatarInitials(r.name)}
+                      </div>
+                      <div>
+                        <span className={styles.reviewAuthor}>{r.name}</span>
+                        <span className={styles.reviewDate}>{fmtDate(r.createdAt)}</span>
+                      </div>
+                    </div>
+                    <div className={styles.reviewStars}>
+                      {'★'.repeat(r.rating)}<span className={styles.reviewStarsEmpty}>{'★'.repeat(5 - r.rating)}</span>
+                    </div>
+                  </div>
+                  <p className={styles.reviewText}>{r.text}</p>
+                </div>
+              ))}
+            </div>
+            {reviews.length > 4 && !showAll && (
+              <button className={styles.showMoreBtn} onClick={() => setShowAll(true)}>
+                Arată mai multe · {reviews.length - 4} recenzii
+              </button>
+            )}
+          </>
+        )}
+
+        {/* Form below */}
         <div className={styles.reviewFormWrap}>
           <h3 className={styles.reviewFormTitle}>Lasă o recenzie</h3>
           {submitted ? (
@@ -297,36 +440,69 @@ export default function ProductPage() {
             </form>
           )}
         </div>
-
-        {/* Reviews list */}
-        {reviews === null ? <Spinner /> : reviews.length === 0 ? (
-          <p className={styles.reviewsEmpty}>Nicio recenzie încă. Fii primul care lasă un feedback!</p>
-        ) : (
-          <>
-            <div className={styles.reviewList}>
-              {(showAll ? reviews : reviews.slice(0, 4)).map(r => (
-                <div key={r._id} className={styles.reviewItem}>
-                  <div className={styles.reviewTop}>
-                    <div>
-                      <span className={styles.reviewAuthor}>{r.name}</span>
-                      <span className={styles.reviewDate}>{fmtDate(r.createdAt)}</span>
-                    </div>
-                    <div className={styles.reviewStars}>
-                      {'★'.repeat(r.rating)}<span className={styles.reviewStarsEmpty}>{'★'.repeat(5 - r.rating)}</span>
-                    </div>
-                  </div>
-                  <p className={styles.reviewText}>{r.text}</p>
-                </div>
-              ))}
-            </div>
-            {reviews.length > 4 && !showAll && (
-              <button className={styles.showMoreBtn} onClick={() => setShowAll(true)}>
-                Arată mai multe · {reviews.length - 4} recenzii
-              </button>
-            )}
-          </>
-        )}
       </div>
+
+      {related?.length > 0 && (
+        <div className={styles.relatedSection}>
+          <div className={styles.relatedHead}>
+            <div className={styles.relatedEyebrow}>MERGE BINE CU</div>
+            <h2 className={styles.relatedTitle}>Din aceeași categorie</h2>
+          </div>
+          <div className={styles.relatedGrid}>
+            {related.map(prod => <ProductCard key={prod._id} product={prod} />)}
+          </div>
+        </div>
+      )}
+
+      {lightboxOpen && p.images?.[active] && (
+        <div
+          className={styles.lightbox}
+          onClick={() => setLightboxOpen(false)}
+          onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
+          onTouchEnd={e => {
+            const dx = e.changedTouches[0].clientX - touchStartX.current;
+            if (Math.abs(dx) < 40) return;
+            if (dx < 0) setActive(a => Math.min(p.images.length - 1, a + 1));
+            else setActive(a => Math.max(0, a - 1));
+          }}
+        >
+          <button
+            className={styles.lightboxClose}
+            onClick={e => { e.stopPropagation(); setLightboxOpen(false); }}
+            aria-label="Închide"
+          >✕</button>
+          <img
+            src={p.images[active]}
+            alt={p.name}
+            className={styles.lightboxImg}
+            onClick={e => e.stopPropagation()}
+          />
+          {p.images.length > 1 && (
+            <>
+              <button
+                className={`${styles.lightboxNav} ${styles.lightboxPrev}`}
+                onClick={e => { e.stopPropagation(); setActive(a => Math.max(0, a - 1)); }}
+                disabled={active === 0}
+              >‹</button>
+              <button
+                className={`${styles.lightboxNav} ${styles.lightboxNext}`}
+                onClick={e => { e.stopPropagation(); setActive(a => Math.min(p.images.length - 1, a + 1)); }}
+                disabled={active === p.images.length - 1}
+              >›</button>
+              <div className={styles.lightboxDots} onClick={e => e.stopPropagation()}>
+                {p.images.map((_, i) => (
+                  <button
+                    key={i}
+                    className={`${styles.lightboxDot} ${i === active ? styles.lightboxDotActive : ''}`}
+                    onClick={() => setActive(i)}
+                    aria-label={`Imaginea ${i + 1}`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }

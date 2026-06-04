@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import usePageTitle from '../../hooks/usePageTitle.js';
+import useSeo from '../../hooks/useSeo.js';
 import { listProducts } from '../../services/products.service.js';
 import api from '../../services/api.js';
 import ProductCard from '../../components/products/ProductCard.jsx';
@@ -16,7 +16,12 @@ export default function CatalogPage() {
   const activeTags = params.get('tags')?.split(',').filter(Boolean) || [];
   const inStock   = params.get('inStock') === '1';
 
-  usePageTitle(category === 'Toate' ? 'Catalog' : category);
+  useSeo({
+    title: category === 'Toate' ? 'Catalog' : category,
+    description: category === 'Toate'
+      ? 'Descoperă întreaga noastră colecție de ciocolată artizanală — praline, tablete, trufe și cadouri.'
+      : `Produse din categoria ${category} — ciocolată artizanală făcută cu grijă în atelierul nostru.`,
+  });
 
   const [products,        setProducts]        = useState(null);
   const [cats,            setCats]            = useState(['Toate']);
@@ -26,7 +31,7 @@ export default function CatalogPage() {
   const [showFilters,     setShowFilters]     = useState(false);
 
   useEffect(() => {
-    api.get('/settings/categories').then(r => setCats(['Toate', ...r.data])).catch(() => {});
+    api.get('/settings/categories').then(r => setCats(['Toate', ...r.data.map(c => c.name || c)])).catch(() => {});
     api.get('/products/tags').then(r => setAvailTags(r.data)).catch(() => {});
   }, []);
 
@@ -181,13 +186,21 @@ export default function CatalogPage() {
                 )}
               </form>
 
-              <select className={styles.sort} value={sort} onChange={(e) => setParam('sort', e.target.value)}>
-                <option value="popular">Populare</option>
-                <option value="newest">Noi</option>
-                <option value="price-asc">Preț ↑</option>
-                <option value="price-desc">Preț ↓</option>
-                <option value="rating">Rating</option>
-              </select>
+              <div className={styles.sortPills}>
+                {[
+                  { v: 'popular',    l: 'Populare' },
+                  { v: 'newest',     l: 'Noi' },
+                  { v: 'price-asc',  l: 'Preț ↑' },
+                  { v: 'price-desc', l: 'Preț ↓' },
+                  { v: 'rating',     l: 'Rating' },
+                ].map(o => (
+                  <button
+                    key={o.v}
+                    className={`${styles.sortPill} ${sort === o.v ? styles.sortPillActive : ''}`}
+                    onClick={() => setParam('sort', o.v)}
+                  >{o.l}</button>
+                ))}
+              </div>
             </div>
 
             {/* Active filter chips */}
