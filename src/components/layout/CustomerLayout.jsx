@@ -4,7 +4,6 @@ import Header from './Header.jsx';
 import Footer from './Footer.jsx';
 import CartDrawer from './CartDrawer.jsx';
 import ScrollToTop from './ScrollToTop.jsx';
-import WhatsAppFab from '../ui/WhatsAppFab.jsx';
 import AnnouncementBanner from './AnnouncementBanner.jsx';
 import styles from './CustomerLayout.module.css';
 
@@ -68,7 +67,6 @@ export default function CustomerLayout() {
         </main>
         {!['/login', '/forgot-password', '/reset-password'].includes(pathname) && <Footer />}
       </div>
-      <WhatsAppFab />
     </>
   );
 }
