@@ -28,7 +28,13 @@ export default function Footer() {
         {/* Brand */}
         <div>
           <div className={styles.logoGroup}>
-            <div className={styles.mark}>{(store.storeName || 'C')[0].toLowerCase()}</div>
+            <img
+              src="https://res.cloudinary.com/do3wzvgto/image/upload/v1780763493/ciocolaterie/logo-email.svg"
+              className={styles.mark}
+              width="36"
+              height="36"
+              alt={store.storeName || 'Logo'}
+            />
             <div className={styles.logo}>{store.storeName}</div>
           </div>
           <p className={styles.tagline}>Ciocolată artizanală,<br />din atelier la tine.</p>

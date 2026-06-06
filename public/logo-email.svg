@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D4A43A"/>
+      <stop offset="100%" stop-color="#B8721A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer ring -->
+  <circle cx="60" cy="60" r="57" fill="#1C1410" stroke="url(#g)" stroke-width="1.5"/>
+  <!-- Inner decorative ring -->
+  <circle cx="60" cy="60" r="50" fill="none" stroke="url(#g)" stroke-width="0.5" opacity="0.35"/>
+
+  <!-- Elegant C arc: large arc from top-right to bottom-right, leaving gap on right -->
+  <!-- Arc center 60,60 radius 26, from angle -50° to +50° going the long way -->
+  <path d="M 76.7 40.1 A 26 26 0 1 0 76.7 79.9"
+        fill="none" stroke="url(#g)" stroke-width="6"
+        stroke-linecap="round"/>
+
+  <!-- Top serif -->
+  <line x1="68" y1="40.1" x2="78.5" y2="37.5" stroke="url(#g)" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Bottom serif -->
+  <line x1="68" y1="79.9" x2="78.5" y2="82.5" stroke="url(#g)" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Small diamond ornament top-center -->
+  <polygon points="60,7 62.5,11 60,15 57.5,11" fill="#C9821A" opacity="0.7"/>
+  <!-- Small diamond ornament bottom-center -->
+  <polygon points="60,105 62.5,109 60,113 57.5,109" fill="#C9821A" opacity="0.7"/>
+</svg>

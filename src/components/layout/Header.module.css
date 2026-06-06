@@ -26,11 +26,6 @@
   box-shadow: none;
 }
 :global(body.hero-page) .header .brand { color: #fff; }
-:global(body.hero-page) .header .mark {
-  background: rgba(255,255,255,.15);
-  color: #fff;
-  border: 1px solid rgba(255,255,255,.2);
-}
 :global(body.hero-page) .header .nav a { color: rgba(255,255,255,.75); }
 :global(body.hero-page) .header .nav a:hover,
 :global(body.hero-page) .header .nav a.active { color: #fff; }
@@ -54,7 +49,6 @@
   background: rgba(10,10,15,.93);
 }
 :global(body.hero-page) .scrolled .brand { color: var(--ink); }
-:global(body.hero-page) .scrolled .mark { background: var(--ink); color: var(--bg); border: none; }
 :global(body.hero-page) .scrolled .nav a { color: var(--ink-3); }
 :global(body.hero-page) .scrolled .nav a:hover,
 :global(body.hero-page) .scrolled .nav a.active { color: var(--ink); }
@@ -85,16 +79,10 @@
 .mark {
   width: 32px;
   height: 32px;
-  background: var(--ink);
-  color: var(--bg);
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--serif);
-  font-size: 17px;
-  font-style: italic;
   flex-shrink: 0;
+  display: block;
+  object-fit: cover;
 }
 .brand {
   font-family: var(--serif);

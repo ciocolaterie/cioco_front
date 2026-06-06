@@ -10,7 +10,7 @@ function avatarColor(name = '') {
 function avatarInitials(name = '') {
   return (name || '?').trim().split(/\s+/).slice(0, 2).map(w => w[0]?.toUpperCase()).join('') || '?';
 }
-import { listProducts } from '../../services/products.service.js';
+import { getBestsellers } from '../../services/products.service.js';
 import { getFeaturedReviews } from '../../services/reviews.service.js';
 import api from '../../services/api.js';
 import ProductCard from '../../components/products/ProductCard.jsx';
@@ -58,7 +58,7 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    listProducts({ sort: 'rating', limit: 3 }).then(setProducts).catch(() => setProducts([]));
+    getBestsellers(3).then(setProducts).catch(() => setProducts([]));
     api.get('/settings/categories').then(r => setCategories(r.data.map(c => c.name || c))).catch(() => setCategories(Object.keys(ICON_MAP)));
     api.get('/settings/stats').then(r => setSiteStats(r.data)).catch(() => setSiteStats({}));
     getFeaturedReviews().then(setFeatured).catch(() => setFeatured({ featured: [], heroReview: null }));

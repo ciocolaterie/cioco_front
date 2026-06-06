@@ -81,7 +81,13 @@ export default function Header() {
 
           {/* Logo */}
           <Link to="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
-            <span className={styles.mark}>{(storeName || 'C')[0].toLowerCase()}</span>
+            <img
+              src="https://res.cloudinary.com/do3wzvgto/image/upload/v1780763493/ciocolaterie/logo-email.svg"
+              className={styles.mark}
+              width="32"
+              height="32"
+              alt={storeName || 'Logo'}
+            />
             <span className={styles.brand}>{storeName || 'Ciocolaterie'}</span>
           </Link>
 
