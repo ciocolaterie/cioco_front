@@ -34,10 +34,7 @@ export function CartProvider({ children }) {
   };
   const removeFromCart = (productId) => setCart(c => c.filter(x => x.product !== productId));
   const clearCart = () => setCart([]);
-  const initFavorites = (ids) => setFavorites(prev => {
-    const merged = [...new Set([...prev, ...ids])];
-    return merged;
-  });
+  const initFavorites = (ids) => setFavorites(ids);
 
   const toggleFavorite = (productId) => {
     setFavorites(prev => {

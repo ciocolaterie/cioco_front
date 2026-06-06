@@ -8,7 +8,6 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    localStorage.removeItem('token'); // migrated to httpOnly cookie
     authService.me()
       .then(({ user }) => setUser(user))
       .catch(() => setUser(null))

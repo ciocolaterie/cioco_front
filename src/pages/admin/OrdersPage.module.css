@@ -150,19 +150,13 @@
 }
 
 /* Card state modifiers */
-.cardUrgent {
-  border-top: 3px solid #FB923C;
-}
 .cardSelected {
   border-color: var(--accent);
   background: rgba(123,61,29,.04);
   box-shadow: 0 0 0 2px rgba(123,61,29,.15);
 }
-.cardNew {
-  border-left: 3px solid var(--accent);
-}
-.cardDone   { opacity: .8; }
-.cardCancel { opacity: .65; }
+.cardDone   { opacity: .75; }
+.cardCancel { opacity: .6; }
 
 /* ===== Card controls (checkbox + urgent) ===== */
 .cardControls {
@@ -258,6 +252,7 @@
   padding: 5px 10px; border-radius: 8px;
   margin-top: auto;
 }
+.cardStatusNew    { background: #FFE5D6; color: #A0451B; }
 .cardStatusDone   { background: #DCFCE7; color: #15803D; }
 .cardStatusCancel { background: var(--error-bg); color: var(--error); }
 .cardStatusUrgent { background: #FFF7ED; color: #EA580C; }

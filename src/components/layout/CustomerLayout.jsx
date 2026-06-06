@@ -66,7 +66,7 @@ export default function CustomerLayout() {
         <main key={pathname} className={styles.outlet}>
           <Outlet />
         </main>
-        <Footer />
+        {!['/login', '/forgot-password', '/reset-password'].includes(pathname) && <Footer />}
       </div>
       <WhatsAppFab />
     </>

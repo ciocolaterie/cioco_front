@@ -1,148 +1,169 @@
-/* Split-screen layout */
+/* ── PAGE: full-screen dark background ───────────── */
 .page {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: calc(100dvh - 64px);
-}
-
-/* ── Left decorative panel ── */
-.panel {
-  background: var(--ink);
+  position: relative;
+  min-height: 100dvh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 48px;
-  gap: 28px;
-  position: relative;
-  overflow: hidden;
+  padding: 40px 20px;
+  background:
+    url('https://res.cloudinary.com/do3wzvgto/image/upload/v1780765890/ciocolaterie/about-story.jpg')
+    center / cover fixed;
 }
-.panel::before {
-  content: '';
-  position: absolute;
-  top: -140px; right: -140px;
-  width: 520px; height: 520px;
-  border-radius: 50%;
-  background: rgba(123,61,29,.13);
-  pointer-events: none;
-}
-.panel::after {
-  content: '';
-  position: absolute;
-  bottom: -100px; left: -100px;
-  width: 380px; height: 380px;
-  border-radius: 50%;
-  background: rgba(201,130,26,.07);
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(10,5,2,.88) 0%, rgba(20,8,3,.82) 50%, rgba(38,16,6,.8) 100%);
   pointer-events: none;
 }
 
-.panelMark {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,.18);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--serif);
-  font-size: 28px;
-  font-style: italic;
-  color: rgba(255,255,255,.9);
-  position: relative;
-  z-index: 1;
-}
-.panelLine {
-  width: 36px;
-  height: 1px;
-  background: rgba(255,255,255,.18);
-  position: relative;
-  z-index: 1;
-}
-.panelQuote {
-  font-family: var(--serif);
-  font-size: clamp(22px, 2.2vw, 32px);
-  line-height: 1.35;
-  color: #fff;
-  text-align: center;
-  font-style: italic;
-  max-width: 300px;
-  margin: 0;
-  position: relative;
-  z-index: 1;
-}
-.panelBy {
-  font-size: 11px;
-  letter-spacing: .18em;
-  font-weight: 600;
-  color: var(--accent-2);
-  text-transform: uppercase;
-  position: relative;
-  z-index: 1;
-}
-
-/* ── Right form side ── */
-.formSide {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 48px 40px;
-  background: var(--bg);
-}
-
+/* ── CARD ─────────────────────────────────────────── */
 .card {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  background: var(--bg);
+  border-radius: 24px;
+  padding: 44px 40px 36px;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, .45), 0 0 0 1px rgba(255,255,255,.06);
 }
 
-/* Tabs */
-.tabs { display: flex; gap: 4px; background: var(--bg-3); padding: 4px; border-radius: 999px; margin-bottom: 28px; }
-.tabs button { flex: 1; padding: 8px; border: none; background: transparent; border-radius: 999px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--ink-2); transition: background .15s, color .15s, box-shadow .15s; }
-.tabs button.active { background: var(--bg-2); color: var(--ink); box-shadow: 0 1px 4px rgba(28,20,16,.10); }
+/* ── BRAND ────────────────────────────────────────── */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 32px;
+}
 
-/* Heading */
-.card h1 { font-family: var(--serif); font-size: 28px; margin-bottom: 24px; }
+.logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: block;
+  flex-shrink: 0;
+}
 
-/* Form */
-.form { display: flex; flex-direction: column; gap: 14px; }
+.brandName {
+  font-family: var(--serif);
+  font-size: 17px;
+  color: var(--ink);
+}
 
-/* Float-label fields */
-.floatField { position: relative; }
-.floatField input {
-  width: 100%;
-  padding: 22px 14px 8px;
+/* ── TABS ─────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-2);
   border: 1px solid var(--line);
-  border-radius: 10px;
-  font-size: 14px;
-  font-family: inherit;
+  padding: 4px;
+  border-radius: 999px;
+  margin-bottom: 28px;
+}
+
+.tab,
+.tabActive {
+  flex: 1;
+  padding: 9px 16px;
+  border: none;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .18s, color .18s, box-shadow .18s;
+}
+
+.tab {
+  background: transparent;
+  color: var(--ink-3);
+}
+
+.tabActive {
   background: var(--bg);
   color: var(--ink);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, .1);
+}
+
+/* ── HEADING ──────────────────────────────────────── */
+.heading {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+
+/* ── FORM ─────────────────────────────────────────── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── FLOAT LABELS ─────────────────────────────────── */
+.floatField { position: relative; }
+
+.floatField input {
+  width: 100%;
+  height: 58px;
+  padding: 22px 16px 8px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: inherit;
+  background: var(--bg-2);
+  color: var(--ink);
   outline: none;
-  transition: border-color .15s;
+  transition: border-color .18s, box-shadow .18s, background .18s;
   box-sizing: border-box;
 }
-.floatField input:focus { border-color: var(--accent); }
+
+.floatField input:focus {
+  border-color: var(--accent);
+  background: var(--bg);
+  box-shadow: 0 0 0 3px rgba(123, 61, 29, .1);
+}
+
 .floatField label {
   position: absolute;
   top: 50%;
-  left: 14px;
+  left: 17px;
   transform: translateY(-50%);
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--ink-3);
   pointer-events: none;
-  transition: top .15s, font-size .15s, transform .15s, color .15s;
+  transition: top .16s ease, font-size .16s ease, font-weight .16s ease,
+              letter-spacing .16s ease, color .16s ease, transform .16s ease;
 }
+
 .floatField input:focus + label,
 .floatField input:not(:placeholder-shown) + label {
-  top: 9px;
-  transform: translateY(0);
-  font-size: 11px;
+  top: 10px;
+  transform: none;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
 }
-.floatField input:focus + label { color: var(--accent); }
 
-/* Submit button */
-.form button[type="submit"] {
-  margin-top: 8px;
-  padding: 14px;
+.floatField input:focus + label { color: var(--accent); }
+.floatField input:not(:placeholder-shown):not(:focus) + label { color: var(--ink-3); }
+
+/* ── FORGOT ───────────────────────────────────────── */
+.forgotLink {
+  font-size: 12px;
+  color: var(--ink-3);
+  text-align: right;
+  margin-top: -4px;
+  transition: color .15s;
+}
+.forgotLink:hover { color: var(--accent); }
+
+/* ── SUBMIT ───────────────────────────────────────── */
+.submitBtn {
+  margin-top: 4px;
+  height: 52px;
   background: var(--ink);
   color: var(--bg);
   border: none;
@@ -150,23 +171,43 @@
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
-  transition: background .2s;
+  transition: background .2s, transform .18s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.form button[type="submit"]:hover:not(:disabled) { background: var(--accent); }
+.submitBtn:hover:not(:disabled) {
+  background: var(--accent);
+  transform: translateY(-1px);
+}
+.submitBtn:disabled { opacity: .55; cursor: not-allowed; }
 
-.forgotLink { font-size: 12px; color: var(--ink-3); text-align: right; margin-top: -4px; }
-.forgotLink:hover { color: var(--accent); }
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, .3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-.back { display: block; text-align: center; margin-top: 20px; font-size: 13px; color: var(--ink-2); }
+/* ── BACK LINK ────────────────────────────────────── */
+.back {
+  display: block;
+  text-align: center;
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--ink-3);
+  transition: color .15s;
+}
 .back:hover { color: var(--ink); }
 
-/* Mobile — stack, hide panel */
-@media (max-width: 768px) {
-  .page { grid-template-columns: 1fr; min-height: auto; }
-  .panel { display: none; }
-  .formSide { padding: 48px 24px; min-height: calc(100dvh - 64px); }
-}
+/* ── MOBILE ───────────────────────────────────────── */
 @media (max-width: 480px) {
-  .formSide { padding: 36px 20px; }
-  .card h1 { font-size: 24px; margin-bottom: 18px; }
+  .card {
+    padding: 36px 24px 28px;
+    border-radius: 20px;
+  }
+  .heading { font-size: 24px; margin-bottom: 20px; }
 }

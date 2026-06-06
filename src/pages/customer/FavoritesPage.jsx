@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext.jsx';
 import { listProducts } from '../../services/products.service.js';
+import api from '../../services/api.js';
 import ProductCard from '../../components/products/ProductCard.jsx';
 import Empty from '../../components/ui/Empty.jsx';
 import { SkeletonGrid } from '../../components/ui/Skeleton.jsx';
@@ -16,11 +17,18 @@ const HEART_ICON = (
 
 export default function FavoritesPage() {
   usePageTitle('Favorite');
-  const { favorites } = useCart();
+  const { favorites, initFavorites } = useCart();
   const [all, setAll] = useState(null);
   useEffect(() => {
     if (favorites.length === 0) { setAll([]); return; }
-    listProducts({ ids: favorites.join(',') }).then(setAll).catch(() => setAll([]));
+    listProducts({ ids: favorites.join(',') }).then(products => {
+      setAll(products);
+      const validIds = products.map(p => String(p._id));
+      if (validIds.length < favorites.length) {
+        initFavorites(validIds);
+        api.patch('/auth/favorites', { ids: validIds }).catch(() => {});
+      }
+    }).catch(() => setAll([]));
   }, [favorites.join(',')]); // eslint-disable-line
   if (!all) return <div className={`container ${styles.page}`}><SkeletonGrid count={4} /></div>;
   const favs = all;

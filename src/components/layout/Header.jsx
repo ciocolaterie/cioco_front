@@ -11,16 +11,15 @@ function initials(name = '') {
 }
 
 const NAV_LINKS = [
-  { to: '/catalog',          label: 'Catalog'  },
-  { to: '/catalog?cat=Cadouri', label: 'Cadouri'  },
-  { to: '/despre',           label: 'Despre'   },
-  { to: '/contact',          label: 'Contact'  },
+  { to: '/catalog', label: 'Produse'   },
+  { to: '/despre',  label: 'Despre noi' },
+  { to: '/contact', label: 'Contact'   },
 ];
 
 export default function Header() {
   const { user, isAdmin } = useAuth();
   const { count, favorites, openCart } = useCart();
-  const { storeName } = useStoreInfo();
+  const { storeName, storeLogo } = useStoreInfo();
   const navigate = useNavigate();
 
   const [search, setSearch]       = useState('');
@@ -82,7 +81,7 @@ export default function Header() {
           {/* Logo */}
           <Link to="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
             <img
-              src="https://res.cloudinary.com/do3wzvgto/image/upload/v1780763493/ciocolaterie/logo-email.svg"
+              src={storeLogo || 'https://res.cloudinary.com/do3wzvgto/image/upload/v1780763493/ciocolaterie/logo-email.svg'}
               className={styles.mark}
               width="32"
               height="32"

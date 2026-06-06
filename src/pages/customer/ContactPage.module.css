@@ -1,5 +1,5 @@
 .page { padding: 60px 0 100px; }
-.intro { margin-bottom: 56px; }
+
 .eyebrow {
   font-size: 11px;
   font-weight: 700;
@@ -7,9 +7,11 @@
   color: var(--accent);
   margin-bottom: 12px;
 }
+.intro { margin-bottom: 56px; }
 .title { font-family: var(--serif); font-size: clamp(36px, 4vw, 56px); margin-bottom: 12px; }
 .lead { font-size: 15px; color: var(--ink-2); max-width: 480px; line-height: 1.7; }
 
+/* ── GRID ─────────────────────────────────────────── */
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -17,54 +19,62 @@
   align-items: start;
 }
 
+/* ── LEFT: CONTACT INFO ───────────────────────────── */
 .left { display: flex; flex-direction: column; gap: 40px; }
-.contactList { display: flex; flex-direction: column; gap: 32px; }
+
+.contactList { display: flex; flex-direction: column; gap: 28px; }
+
 .contactItem {
   display: flex;
   align-items: flex-start;
   gap: 16px;
 }
+
 .contactIcon {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(123,61,29,.08);
-  border: 1px solid rgba(123,61,29,.12);
+  background: rgba(123, 61, 29, .08);
+  border: 1px solid rgba(123, 61, 29, .14);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--accent);
   flex-shrink: 0;
 }
+
 .contactTag {
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: .14em;
+  letter-spacing: .16em;
   color: var(--ink-3);
   margin-bottom: 4px;
 }
+
 .contactValue {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--ink);
   display: block;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 a.contactValue:hover { color: var(--accent); }
-.contactDetail { font-size: 13px; color: var(--ink-3); }
 
+.contactDetail { font-size: 13px; color: var(--ink-3); line-height: 1.5; }
+
+/* map */
 .mapWrap {
   position: relative;
-  border-radius: var(--radius);
+  border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--line);
 }
 .map {
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 4 / 3;
   border: none;
   display: block;
-  filter: saturate(0.55) sepia(0.18) brightness(0.96);
+  filter: saturate(.55) sepia(.18) brightness(.96);
 }
 .mapCaption {
   position: absolute;
@@ -74,7 +84,7 @@ a.contactValue:hover { color: var(--accent); }
   letter-spacing: .14em;
   font-weight: 600;
   color: var(--ink-2);
-  background: rgba(255,255,255,.9);
+  background: rgba(255, 255, 255, .9);
   padding: 4px 10px;
   border-radius: 999px;
   text-decoration: none;
@@ -90,35 +100,99 @@ a.contactValue:hover { color: var(--accent); }
   font-size: 14px;
   font-weight: 500;
   color: var(--ink-2);
-  text-decoration: none;
-  transition: all .15s;
+  transition: border-color .15s, color .15s;
 }
 .mapLink:hover { border-color: var(--ink-3); color: var(--ink); }
 
+/* ── RIGHT: FORM CARD ─────────────────────────────── */
 .formCard {
-  background: var(--bg-2);
+  background: var(--bg);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 40px;
+  border-radius: 20px;
+  padding: 44px 40px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, .06);
+  position: sticky;
+  top: 100px;
 }
-.formTitle { font-family: var(--serif); font-size: 28px; margin-bottom: 28px; }
-.form { display: flex; flex-direction: column; gap: 20px; }
-.field { display: flex; flex-direction: column; gap: 8px; }
-.label { font-size: 14px; color: var(--ink-2); font-weight: 500; }
-.input, .textarea {
-  padding: 12px 16px;
+
+.formHeader { margin-bottom: 32px; }
+.formTitle { font-family: var(--serif); font-size: 28px; color: var(--ink); margin-bottom: 6px; }
+.formSub { font-size: 13px; color: var(--ink-3); }
+
+/* ── FLOAT LABELS ─────────────────────────────────── */
+.form { display: flex; flex-direction: column; gap: 16px; }
+
+.fieldWrap { position: relative; }
+
+.input {
+  width: 100%;
+  height: 58px;
+  padding: 22px 16px 8px;
   border: 1.5px solid var(--line);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--bg-2);
-  font-size: 14px;
+  font-size: 15px;
   color: var(--ink);
   outline: none;
-  transition: border-color .15s;
+  transition: border-color .18s, box-shadow .18s;
+  resize: none;
+  box-sizing: border-box;
+}
+
+.textarea {
+  height: auto;
+  padding-top: 28px;
+  padding-bottom: 12px;
   resize: none;
 }
-.input:focus, .textarea:focus { border-color: var(--accent); }
+
+.input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(123, 61, 29, .1);
+  background: var(--bg);
+}
+
+.floatLabel {
+  position: absolute;
+  top: 50%;
+  left: 17px;
+  transform: translateY(-50%);
+  font-size: 14.5px;
+  color: var(--ink-3);
+  pointer-events: none;
+  transition: top .16s ease, font-size .16s ease, color .16s ease, transform .16s ease;
+}
+
+.textarea ~ .floatLabel {
+  top: 20px;
+  transform: none;
+}
+
+/* float up when focused or has value */
+.input:focus ~ .floatLabel,
+.input:not(:placeholder-shown) ~ .floatLabel {
+  top: 10px;
+  transform: none;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--accent);
+}
+
+.textarea:focus ~ .floatLabel,
+.textarea:not(:placeholder-shown) ~ .floatLabel {
+  top: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--accent);
+}
+
+.formError { color: var(--error, #c0392b); font-size: 13px; margin: 0; }
+
+/* ── SUBMIT BUTTON ────────────────────────────────── */
 .btn {
-  padding: 16px;
+  height: 52px;
   background: var(--ink);
   color: var(--bg);
   border: none;
@@ -126,41 +200,101 @@ a.contactValue:hover { color: var(--accent); }
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: background .15s;
-}
-.btn:hover { background: var(--accent); }
-.formError { color: var(--error); font-size: 13px; margin: 0; }
-
-@keyframes popIn {
-  0%   { opacity: 0; transform: scale(.4); }
-  65%  { transform: scale(1.15); }
-  100% { opacity: 1; transform: scale(1); }
-}
-.sent {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--ink-2);
-}
-.sentIcon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--success-bg);
-  color: var(--success);
-  font-size: 24px;
+  transition: background .15s, transform .15s;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 16px;
-  animation: popIn .45s cubic-bezier(.34,1.56,.64,1);
+  margin-top: 4px;
+}
+.btn:hover:not(:disabled) { background: var(--accent); transform: translateY(-1px); }
+.btn:disabled { opacity: .6; cursor: not-allowed; }
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, .3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── SUCCESS STATE ────────────────────────────────── */
+.sent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 48px 20px;
 }
 
+.sentRing {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  animation: ringIn .5s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.sentIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: iconIn .45s .08s cubic-bezier(.34, 1.56, .64, 1) both;
+}
+
+@keyframes ringIn {
+  from { opacity: 0; transform: scale(.5); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes iconIn {
+  from { opacity: 0; transform: scale(.4); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.sentTitle {
+  font-family: var(--serif);
+  font-size: 26px;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.sentDesc {
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.65;
+  max-width: 300px;
+  margin-bottom: 32px;
+}
+.sentBtn {
+  padding: 11px 26px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  background: none;
+  cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.sentBtn:hover { border-color: var(--ink-3); color: var(--ink); }
+
+/* ── RESPONSIVE ───────────────────────────────────── */
 @media (max-width: 900px) {
   .grid { grid-template-columns: 1fr; }
+  .formCard { position: static; }
 }
 @media (max-width: 480px) {
   .page { padding: 48px 0 72px; }
   .intro { margin-bottom: 44px; }
-  .formCard { padding: 28px 20px; }
-  .formTitle { font-size: 22px; margin-bottom: 22px; }
+  .formCard { padding: 28px 20px; border-radius: 16px; }
+  .formTitle { font-size: 22px; }
 }

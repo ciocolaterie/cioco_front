@@ -8,8 +8,8 @@ function FavoriteSync() {
   const { user } = useAuth();
   const { initFavorites } = useCart();
   useEffect(() => {
-    if (user?.favorites?.length) {
-      initFavorites(user.favorites.map(String));
+    if (user) {
+      initFavorites((user.favorites || []).map(String));
     }
   }, [user?._id]); // eslint-disable-line
   return null;

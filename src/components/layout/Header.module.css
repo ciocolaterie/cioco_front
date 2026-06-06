@@ -28,7 +28,7 @@
 :global(body.hero-page) .header .brand { color: #fff; }
 :global(body.hero-page) .header .nav a { color: rgba(255,255,255,.75); }
 :global(body.hero-page) .header .nav a:hover,
-:global(body.hero-page) .header .nav a.active { color: #fff; }
+:global(body.hero-page) .header .nav a:global(.active) { color: #fff; }
 :global(body.hero-page) .header .iconBtn { color: rgba(255,255,255,.8); }
 :global(body.hero-page) .header .iconBtn:hover { background: rgba(255,255,255,.12); color: #fff; }
 :global(body.hero-page) .header .loginBtn { border-color: rgba(255,255,255,.3); color: #fff; }
@@ -96,16 +96,34 @@
   display: flex;
   gap: 28px;
   flex: 1;
+  justify-content: center;
 }
 .nav a {
   font-size: 14px;
   color: var(--ink-3);
   font-weight: 450;
-  transition: color .15s;
   white-space: nowrap;
+  position: relative;
+  padding-bottom: 2px;
+  transition: color .2s;
 }
-.nav a:hover  { color: var(--ink); }
-.nav a.active { color: var(--ink); font-weight: 600; }
+.nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: var(--accent);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .25s cubic-bezier(.4,0,.2,1);
+}
+.nav a:hover { color: var(--ink); }
+.nav a:hover::after { transform: scaleX(1); }
+.nav a:global(.active) { color: var(--ink); font-weight: 500; }
+.nav a:global(.active)::after { transform: scaleX(1); }
 
 /* ===== Actions ===== */
 .actions {

@@ -7,9 +7,18 @@ import {
   LabelList,
 } from 'recharts';
 import { getAnalytics } from '../../services/admin.service.js';
+import api from '../../services/api.js';
 import Spinner from '../../components/ui/Spinner.jsx';
 import { fmt } from '../../utils/format.js';
 import styles from './AnalyticsPage.module.css';
+
+const exportCSV = async () => {
+  const res = await api.get('/admin/export-orders', { responseType: 'blob' });
+  const url = URL.createObjectURL(res.data);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'analytics-comenzi.csv'; a.click();
+  URL.revokeObjectURL(url);
+};
 
 const MONTHS_RO   = ['ian','feb','mar','apr','mai','iun','iul','aug','sep','oct','noi','dec'];
 const PIE_COLORS  = ['#7B3D1D','#16a34a','#2563eb','#db2777','#ea580c','#0891b2'];
@@ -199,7 +208,7 @@ export default function AnalyticsPage() {
           <h1 className={styles.title}>Analytics</h1>
           <p className={styles.sub}>Performanță, vânzări și tendințe</p>
         </div>
-        <button className={styles.exportBtn}>
+        <button className={styles.exportBtn} onClick={exportCSV}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Export
         </button>
